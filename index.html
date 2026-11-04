@@ -240,6 +240,12 @@ main{max-width:960px;margin:0 auto;padding:14px 14px 30px}
   position:absolute;left:10%;right:10%;bottom:-13px;height:15px;z-index:-1;
   background:radial-gradient(ellipse at center,rgba(80,55,20,.38),transparent 70%);
 }
+/* the living ant — a drawn character performs; the book picture is
+   never moved (owner's correction). JS drives it with translate3d. */
+.actor.antactor{
+  left:0;bottom:24px;margin-left:0;width:min(148px,40vw);will-change:transform;
+}
+.antsvg{width:100%;height:auto;display:block;overflow:visible}
 .perflabel{
   position:absolute;left:0;right:0;bottom:5px;z-index:4;text-align:center;
   font-size:19px;font-weight:800;color:var(--emerald-deep);
@@ -713,6 +719,10 @@ async function steamObserve(cell){
    crops are never altered — every motion is transforms on the crop —
    except the growth sequences, which are flat explanatory diagrams in
    the book's colour family and end with the book's own fruit picture.
+   And one owner's correction on top: the ANT is not its picture moved
+   at all — the book ant stays still as the tap card while a DRAWN
+   living ant (perfAnt, data flag `live`) walks on stage like a real
+   ant: tripod gait, stop-start scurries, antennae exploring.
    Performances run UNDER the host's spoken line (same slow voice and
    speech gates); after a performance the hero can be tapped again to
    replay it ("Watch again"). Mapping for all 45 observe cells lives in
@@ -930,6 +940,166 @@ const PERF_ANIM = {
     await Promise.all([A(bob, { transform: ['scale(1)', 'scale(1.06)', 'scale(1)'] }, { duration: 1150 }), waitP(1150)]);
   }
 };
+/* ================= the LIVING ANT (owner's correction) =================
+   "In ant moving use any ant like in my message 🐜 and moves like a
+   real ant on the screen. Don't move picture of ant." So the book ant
+   picture stays STATIC as the tap card, and on stage a drawn ant —
+   head, thorax, banded abdomen, six jointed legs, two elbowed
+   antennae — performs like a real ant:
+   · TRIPOD GAIT — legs step in two alternating tripods (front+hind on
+     one side with the middle leg opposite), phase locked to distance
+     travelled, so the legs are still whenever the ant is still;
+   · STOP-START SCURRY — real ants burst, pause, burst: short scurries
+     along a slightly wandering path, brief pauses where it stops,
+     sweeps its antennae (faster — exploring) and turns a little;
+   · body pitches subtly with speed, soft shadow rides underneath;
+   · it ends facing the child with a happy antennae wave.          */
+const ANT_LEGS = [
+  // document order: far side first (behind the body), then near side.
+  // tripod 0 = A (front-near + mid-far + hind-near), 1 = B (the rest).
+  { hip: [112, 77], knee: [126, 60], foot: [136, 101], side: 0, tripod: 1 },
+  { hip: [101, 79], knee: [103, 58], foot: [94, 101],  side: 0, tripod: 0 },
+  { hip: [89, 77],  knee: [75, 60],  foot: [59, 101],  side: 0, tripod: 1 },
+  { hip: [116, 80], knee: [131, 63], foot: [143, 104], side: 1, tripod: 0 },
+  { hip: [104, 82], knee: [108, 61], foot: [99, 104],  side: 1, tripod: 1 },
+  { hip: [92, 80],  knee: [77, 63],  foot: [62, 104],  side: 1, tripod: 0 }
+];
+function antSVG(){
+  const leg = L => {
+    const far = !L.side, col = far ? '#503a26' : '#33241a';
+    return `<g class="antleg-swing"><path d="M${L.hip[0]} ${L.hip[1]} L${L.knee[0]} ${L.knee[1]}"
+        stroke="${col}" stroke-width="${far ? 4.4 : 5.2}" stroke-linecap="round" fill="none"/>
+      <g class="antleg-bend"><path d="M${L.knee[0]} ${L.knee[1]} L${L.foot[0]} ${L.foot[1]}"
+        stroke="${col}" stroke-width="${far ? 3.8 : 4.6}" stroke-linecap="round" fill="none"/></g></g>`;
+  };
+  const antenna = (base, mid, tip, far) => `
+    <g class="ant-ant"><path d="M${base[0]} ${base[1]} L${mid[0]} ${mid[1]} Q${(mid[0] + tip[0]) / 2 + 4} ${mid[1] - 3} ${tip[0]} ${tip[1]}"
+      stroke="${far ? '#503a26' : '#2a1a10'}" stroke-width="${far ? 2.8 : 3.4}" stroke-linecap="round" fill="none"/></g>`;
+  return `<svg class="antsvg" viewBox="0 0 200 120" role="img" aria-label="A real ant walking">
+    <defs>
+      <radialGradient id="antAb" cx="38%" cy="30%" r="85%">
+        <stop offset="0%" stop-color="#6b4226"/><stop offset="55%" stop-color="#452a16"/><stop offset="100%" stop-color="#2a1a10"/>
+      </radialGradient>
+      <radialGradient id="antHd" cx="38%" cy="30%" r="85%">
+        <stop offset="0%" stop-color="#5d3a20"/><stop offset="100%" stop-color="#241408"/>
+      </radialGradient>
+    </defs>
+    <ellipse cx="100" cy="109" rx="57" ry="5.5" fill="rgba(80,55,20,.30)"/>
+    <g class="antflip"><g class="antbody">
+      ${ANT_LEGS.filter(l => !l.side).map(leg).join('')}
+      ${antenna([136, 60], [147, 44], [163, 52], true)}
+      <g transform="rotate(-7 46 74)"><ellipse cx="46" cy="74" rx="27" ry="19" fill="url(#antAb)"/>
+        <path d="M38 57 q-4 17 1 33" stroke="rgba(0,0,0,.28)" stroke-width="3.4" fill="none"/>
+        <path d="M52 56 q-4 18 0 36" stroke="rgba(0,0,0,.22)" stroke-width="3.2" fill="none"/>
+        <ellipse cx="37" cy="65" rx="9" ry="5.5" fill="rgba(255,235,200,.20)" transform="rotate(-24 37 65)"/></g>
+      <circle cx="83" cy="76" r="3.8" fill="#33241a"/><circle cx="77" cy="75" r="3" fill="#33241a"/>
+      <ellipse cx="104" cy="74" rx="17" ry="11.5" fill="url(#antHd)"/>
+      <circle cx="130" cy="68" r="13.5" fill="url(#antHd)"/>
+      <ellipse cx="125" cy="61" rx="5" ry="3.4" fill="rgba(255,235,200,.22)" transform="rotate(-20 125 61)"/>
+      <circle cx="135" cy="65" r="3.1" fill="#120a05"/>
+      <circle cx="136.2" cy="63.8" r="1.1" fill="#fff" opacity=".85"/>
+      <path d="M142 75 q6 1 8.5 5" stroke="#241408" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+      <path d="M141 79 q5 2 6.5 6" stroke="#241408" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      ${antenna([140, 57], [153, 40], [171, 49], false)}
+      ${ANT_LEGS.filter(l => l.side).map(leg).join('')}
+    </g></g>
+  </svg>`;
+}
+function perfAnt(slot){
+  return new Promise(resolve => {
+    slot.innerHTML = `<div class="actor antactor">${antSVG()}</div>`;
+    const unit = slot.firstElementChild, svg = unit.querySelector('svg');
+    const flipG = svg.querySelector('.antflip'), bodyG = svg.querySelector('.antbody');
+    const legs = [...svg.querySelectorAll('.antleg-swing')].map((el, i) => ({
+      el, bend: el.querySelector('.antleg-bend'),
+      hip: ANT_LEGS[i].hip, knee: ANT_LEGS[i].knee, tripod: ANT_LEGS[i].tripod }));
+    const ants = [...svg.querySelectorAll('.ant-ant')].map((el, i) => ({
+      el, base: i === 0 ? [136, 60] : [140, 57] }));
+    // choreography: scurry / pause / turn beats, ~10 s in all.
+    // positions are fractions of the free travel width.
+    const TL = [
+      { t: 'go', to: .36, dur: 1500 }, { t: 'pause', dur: 1200 },
+      { t: 'go', to: .70, dur: 1500 }, { t: 'pause', dur: 900 },
+      { t: 'turn', dur: 320 },         { t: 'go', to: .30, dur: 1700 },
+      { t: 'pause', dur: 800 },        { t: 'turn', dur: 320 },
+      { t: 'go', to: .54, dur: 1000 }, { t: 'wave', dur: 850 } ];
+    let total = 0, cur = .05;
+    for (const s of TL){ s.start = total; total += s.dur; if (s.t === 'go'){ s.from = cur; cur = s.to; } }
+    const easeIO = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+    let raf = 0, t0 = null, lastT = 0, lastX = null;
+    let phase = 0, dist = 0, sf = 0, flip = 1, antPh = 0, antFreq = .85, antAmp = 1, dustAt = 0;
+    const frame = now => {
+      if (!slot.contains(unit)){ cancelAnimationFrame(raf); resolve(); return; }
+      if (t0 === null){ t0 = now; lastT = now; }
+      const el = now - t0, dt = Math.min(50, now - lastT); lastT = now;
+      if (el >= total){
+        unit.style.transform = `translate3d(${cur * (slot.clientWidth - unit.clientWidth - 6)}px,0,0)`;
+        resolve(); return;
+      }
+      const seg = TL.find(s => el >= s.start && el < s.start + s.dur);
+      const p = (el - seg.start) / seg.dur;
+      const maxX = Math.max(60, slot.clientWidth - unit.clientWidth - 6);
+      let xF = cur, targetSf = 0, freqT = .85, ampT = 1, pitch = 0, bobY = 0, wiggle = 0;
+      if (seg.t === 'go'){
+        xF = seg.from + (seg.to - seg.from) * easeIO(p);
+        freqT = .85;
+      } else if (seg.t === 'pause'){
+        const prev = TL[TL.indexOf(seg) - 1];
+        xF = prev && prev.t === 'go' ? prev.to : cur;
+        freqT = 1.55; ampT = 1.45;                       // exploring!
+        wiggle = Math.sin(el * .0045) * 2.4;             // little heading turns
+      } else if (seg.t === 'turn'){
+        const prev = TL[TL.indexOf(seg) - 1];
+        xF = prev && prev.t === 'go' ? prev.to : cur;
+        flip = (seg.fromFlip || (seg.fromFlip = flip)) + ((seg.toFlip ?? (seg.toFlip = -flip)) - seg.fromFlip) * easeIO(p);
+        phase += dt * .004; targetSf = .45;
+      } else if (seg.t === 'wave'){
+        freqT = 1.3; ampT = 2.1; pitch = -5.5;          // head up, big wave
+      }
+      const x = xF * maxX;
+      if (lastX !== null && dt > 0){
+        const dx = Math.abs(x - lastX);
+        phase += dx / 21 * Math.PI;                     // gait locked to ground covered
+        dist += dx;
+        if (seg.t === 'go'){
+          const avgV = Math.abs(seg.to - seg.from) * maxX / seg.dur;
+          if (avgV > 0) targetSf = Math.min(1, (dx / dt) / (avgV * 1.5));
+        }
+      }
+      lastX = x;
+      sf += (targetSf - sf) * .18;
+      antFreq += (freqT - antFreq) * .06;
+      antAmp += (ampT - antAmp) * .08;
+      antPh += dt * .001 * antFreq * Math.PI * 2;
+      // legs: two tripods in anti-phase; swing amplitude follows speed,
+      // tibia folds a little as each leg swings forward (the lift).
+      for (const L of legs){
+        const ph = phase + L.tripod * Math.PI;
+        const sw = Math.sin(ph) * 17 * sf;
+        const bd = Math.max(0, Math.sin(ph - 1.1)) * 15 * sf;
+        L.el.setAttribute('transform', `rotate(${sw.toFixed(2)} ${L.hip[0]} ${L.hip[1]})`);
+        L.bend.setAttribute('transform', `rotate(${(-bd).toFixed(2)} ${L.knee[0]} ${L.knee[1]})`);
+      }
+      ants.forEach((aN, i) => {
+        const rot = Math.sin(antPh + i * 1.9) * (i ? 11 : 13) * antAmp;
+        aN.el.setAttribute('transform', `rotate(${rot.toFixed(2)} ${aN.base[0]} ${aN.base[1]})`);
+      });
+      if (seg.t === 'go'){ pitch = -1.6 * sf; bobY = -Math.abs(Math.sin(phase)) * 1.8 * sf; wiggle = Math.sin(dist * .045) * 2.2 * sf; }
+      bodyG.setAttribute('transform', `rotate(${(pitch + wiggle).toFixed(2)} 100 84) translate(0 ${bobY.toFixed(2)})`);
+      flipG.setAttribute('transform', `translate(100 0) scale(${flip.toFixed(3)} 1) translate(-100 0)`);
+      unit.style.transform = `translate3d(${x.toFixed(1)}px,${seg.t === 'go' ? (Math.sin(p * Math.PI) * -3).toFixed(1) : 0}px,0)`;
+      if (sf > .55 && el - dustAt > 280){
+        dustAt = el;
+        const c = relC(unit, slot);
+        const d = fxSpawn(slot, 'dust', { left: (c.cx - flip * c.w * .32 - 8) + 'px', top: (c.bottom - 16) + 'px' });
+        A(d, [{ transform: 'scale(.4)', opacity: .5 }, { transform: 'scale(1.3) translateY(-8px)', opacity: 0 }], { duration: 650 })
+          .then(() => d.remove());
+      }
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+  });
+}
 /* rain falls over the static book page (U Science) */
 async function perfRain(slot, L){
   slot.innerHTML = `<img class="perfbg" src="${L.pageImg}" alt="Your book page">`;
@@ -1035,6 +1205,11 @@ async function runPerformance(slot, label, p, L){
   const w = p.page ? null : wordObj(p.img);
   const src = p.page ? L.pageImg : w.img;
   const say = p.say || (PERF_SAY[p.do] && w ? PERF_SAY[p.do](w.say) : null);
+  if (p.live){ /* the living ant: drawn character, picture never moves */
+    label.textContent = say || '';
+    await Promise.all([perfAnt(slot), say ? Voice.say(say) : Promise.resolve(), waitP(900)]);
+    return;
+  }
   const round = p.do === 'roll' || p.do === 'spin';
   slot.innerHTML = `<div class="actor${round ? ' round' : ''}${p.page ? ' wide' : ''}">
       <div class="flip"><div class="bob"><img src="${src}" alt="${w ? w.word : 'Your book page'}"></div></div>

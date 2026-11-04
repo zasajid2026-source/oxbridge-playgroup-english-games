@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Play-verify the STEAM Perform upgrade: full Letter A playthrough on
 desktop (stubbed speechSynthesis, records spoken lines) driving the new
-perform heroes one at a time — ant walk (screenshot mid-walk), apple
+perform heroes one at a time — the living ant (screenshots mid-scurry
+and mid-pause; the drawn ant performs, the book picture never moves), apple
 growth (screenshot at the big-tree stage), plus one Watch-again replay —
 and a second full playthrough on a 390px mobile viewport with the real
 VOICE toggle OFF (performances must still run and complete).
@@ -84,8 +85,10 @@ def drive_steam(page, shots=False):
                 idx = hero.get_attribute('data-perf')
                 hero.click()
                 if shots and cell_i == 0 and idx == '0':
-                    page.wait_for_timeout(1700)  # ant mid-walk
+                    page.wait_for_timeout(1400)  # living ant mid-scurry
                     page.screenshot(path='verify/shot-perf-ant-walk.png')
+                    page.wait_for_timeout(900)   # ant paused, antennae exploring
+                    page.screenshot(path='verify/shot-ant-pause.png')
                 if shots and cell_i == 0 and idx == '1':
                     page.wait_for_function(
                         "() => document.querySelector('#perfLabel')"

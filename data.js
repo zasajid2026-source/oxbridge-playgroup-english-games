@@ -52,6 +52,7 @@ window.GAME_DATA = {
       {
        "img": "ant",
        "do": "walk",
+       "live": true,
        "say": "Look! The ant is walking! Ants have six little legs."
       },
       {

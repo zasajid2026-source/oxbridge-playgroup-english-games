@@ -34,6 +34,10 @@ Every observe cell gets a `perf` list (one entry per hero picture):
              identify beat rather than an observable process
   say     optional spoken line override during the performance
   variant / fruit: archetype parameters
+  live    True only for the A ant (owner's correction, 2026-11-04):
+          "Don't move picture of ant" — the book picture stays still
+          as the tap card and a DRAWN living ant performs on stage
+          instead (engine: perfAnt in index.html, keyed on this flag).
 
 apply_perf(data) mutates the parsed GAME_DATA dict in place and returns
 a Counter of archetypes used (counted per hero).
@@ -43,7 +47,7 @@ PERF = {
     # A Science is the owner's own pair of examples: the ant walks, and
     # the apple's growth is performed stage by stage.
     ('a', 'Science'): [
-        {'img': 'ant', 'do': 'walk',
+        {'img': 'ant', 'do': 'walk', 'live': True,
          'say': 'Look! The ant is walking! Ants have six little legs.'},
         {'img': 'apple', 'do': 'grow-tree', 'fruit': 'apple'},
     ],
