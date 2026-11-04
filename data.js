@@ -47,6 +47,18 @@ window.GAME_DATA = {
      "imgs": [
       "ant",
       "apple"
+     ],
+     "perf": [
+      {
+       "img": "ant",
+       "do": "walk",
+       "say": "Look! The ant is walking! Ants have six little legs."
+      },
+      {
+       "img": "apple",
+       "do": "grow-tree",
+       "fruit": "apple"
+      }
      ]
     },
     {
@@ -55,6 +67,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "axe"
+     ],
+     "perf": [
+      {
+       "img": "axe",
+       "do": "look"
+      }
      ]
     },
     {
@@ -118,6 +136,14 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "ball"
+     ],
+     "perf": [
+      {
+       "img": "ball",
+       "do": "roll",
+       "variant": "bounce",
+       "say": "Look! The ball rolls and bounces!"
+      }
      ]
     },
     {
@@ -187,6 +213,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "cat"
+     ],
+     "perf": [
+      {
+       "img": "cat",
+       "do": "walk"
+      }
      ]
     },
     {
@@ -259,6 +291,16 @@ window.GAME_DATA = {
      "imgs": [
       "dog",
       "duck"
+     ],
+     "perf": [
+      {
+       "img": "dog",
+       "do": "walk"
+      },
+      {
+       "img": "duck",
+       "do": "swim"
+      }
      ]
     },
     {
@@ -273,6 +315,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "drum"
+     ],
+     "perf": [
+      {
+       "img": "drum",
+       "do": "roll"
+      }
      ]
     },
     {
@@ -329,6 +377,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "eye"
+     ],
+     "perf": [
+      {
+       "img": "eye",
+       "do": "look"
+      }
      ]
     },
     {
@@ -337,6 +391,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "egg"
+     ],
+     "perf": [
+      {
+       "img": "egg",
+       "do": "look"
+      }
      ]
     },
     {
@@ -345,6 +405,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "egg"
+     ],
+     "perf": [
+      {
+       "img": "egg",
+       "do": "look"
+      }
      ]
     },
     {
@@ -401,6 +467,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "fish"
+     ],
+     "perf": [
+      {
+       "img": "fish",
+       "do": "swim"
+      }
      ]
     },
     {
@@ -415,6 +487,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "fish"
+     ],
+     "perf": [
+      {
+       "img": "fish",
+       "do": "look"
+      }
      ]
     },
     {
@@ -472,6 +550,17 @@ window.GAME_DATA = {
      "imgs": [
       "goat",
       "grapes"
+     ],
+     "perf": [
+      {
+       "img": "goat",
+       "do": "walk"
+      },
+      {
+       "img": "grapes",
+       "do": "grow-plant",
+       "fruit": "grapes"
+      }
      ]
     },
     {
@@ -542,6 +631,16 @@ window.GAME_DATA = {
      "imgs": [
       "horse",
       "hen"
+     ],
+     "perf": [
+      {
+       "img": "horse",
+       "do": "walk"
+      },
+      {
+       "img": "hen",
+       "do": "hop"
+      }
      ]
     },
     {
@@ -557,6 +656,16 @@ window.GAME_DATA = {
      "imgs": [
       "horse",
       "hen"
+     ],
+     "perf": [
+      {
+       "img": "horse",
+       "do": "look"
+      },
+      {
+       "img": "hen",
+       "do": "look"
+      }
      ]
     },
     {
@@ -613,6 +722,13 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "ice"
+     ],
+     "perf": [
+      {
+       "img": "ice",
+       "do": "melt",
+       "say": "Look! The ice is melting!"
+      }
      ]
     },
     {
@@ -625,7 +741,13 @@ window.GAME_DATA = {
      "strand": "Engineering",
      "text": "Notice how containers safely hold liquids.",
      "play": "observe",
-     "page": true
+     "page": true,
+     "perf": [
+      {
+       "page": true,
+       "do": "look"
+      }
+     ]
     },
     {
      "strand": "Art",
@@ -681,6 +803,14 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "jelly"
+     ],
+     "perf": [
+      {
+       "img": "jelly",
+       "do": "melt",
+       "variant": "wobble",
+       "say": "Look! The jelly wobbles! Wobble, wobble!"
+      }
      ]
     },
     {
@@ -749,6 +879,14 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "kettle"
+     ],
+     "perf": [
+      {
+       "img": "kettle",
+       "do": "wave",
+       "variant": "steam",
+       "say": "Look! Hot steam goes up! We watch. We do not touch."
+      }
      ]
     },
     {
@@ -818,6 +956,16 @@ window.GAME_DATA = {
      "imgs": [
       "lion",
       "lizard"
+     ],
+     "perf": [
+      {
+       "img": "lion",
+       "do": "walk"
+      },
+      {
+       "img": "lizard",
+       "do": "walk"
+      }
      ]
     },
     {
@@ -888,6 +1036,13 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "moon"
+     ],
+     "perf": [
+      {
+       "img": "moon",
+       "do": "glow",
+       "say": "Look! The moon shines in the night sky!"
+      }
      ]
     },
     {
@@ -957,6 +1112,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "nest"
+     ],
+     "perf": [
+      {
+       "img": "nest",
+       "do": "look"
+      }
      ]
     },
     {
@@ -1028,6 +1189,16 @@ window.GAME_DATA = {
      "imgs": [
       "owl",
       "ostrich"
+     ],
+     "perf": [
+      {
+       "img": "owl",
+       "do": "fly"
+      },
+      {
+       "img": "ostrich",
+       "do": "walk"
+      }
      ]
     },
     {
@@ -1042,6 +1213,13 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "ostrich"
+     ],
+     "perf": [
+      {
+       "img": "ostrich",
+       "do": "walk",
+       "say": "Look at the strong legs! Walking, walking!"
+      }
      ]
     },
     {
@@ -1100,6 +1278,16 @@ window.GAME_DATA = {
      "imgs": [
       "panda",
       "parrot"
+     ],
+     "perf": [
+      {
+       "img": "panda",
+       "do": "walk"
+      },
+      {
+       "img": "parrot",
+       "do": "fly"
+      }
      ]
     },
     {
@@ -1114,6 +1302,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "parrot"
+     ],
+     "perf": [
+      {
+       "img": "parrot",
+       "do": "look"
+      }
      ]
     },
     {
@@ -1170,6 +1364,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "quail"
+     ],
+     "perf": [
+      {
+       "img": "quail",
+       "do": "fly"
+      }
      ]
     },
     {
@@ -1241,6 +1441,13 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "rocket"
+     ],
+     "perf": [
+      {
+       "img": "rocket",
+       "do": "rise",
+       "say": "Look! The rocket goes up, up, up!"
+      }
      ]
     },
     {
@@ -1256,6 +1463,16 @@ window.GAME_DATA = {
      "imgs": [
       "robot",
       "rocket"
+     ],
+     "perf": [
+      {
+       "img": "robot",
+       "do": "look"
+      },
+      {
+       "img": "rocket",
+       "do": "look"
+      }
      ]
     },
     {
@@ -1312,6 +1529,13 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "sun"
+     ],
+     "perf": [
+      {
+       "img": "sun",
+       "do": "glow",
+       "say": "Look! The sun shines! It gives us light and warmth."
+      }
      ]
     },
     {
@@ -1326,6 +1550,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "spoon"
+     ],
+     "perf": [
+      {
+       "img": "spoon",
+       "do": "look"
+      }
      ]
     },
     {
@@ -1382,6 +1612,13 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "tomato"
+     ],
+     "perf": [
+      {
+       "img": "tomato",
+       "do": "grow-plant",
+       "fruit": "tomato"
+      }
      ]
     },
     {
@@ -1396,6 +1633,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "tree"
+     ],
+     "perf": [
+      {
+       "img": "tree",
+       "do": "look"
+      }
      ]
     },
     {
@@ -1451,7 +1694,15 @@ window.GAME_DATA = {
      "strand": "Science",
      "text": "Observe how rain makes outdoor surfaces wet.",
      "play": "observe",
-     "page": true
+     "page": true,
+     "perf": [
+      {
+       "page": true,
+       "do": "flow",
+       "variant": "rain",
+       "say": "Look! Rain is falling! Everything gets wet."
+      }
+     ]
     },
     {
      "strand": "Technology",
@@ -1465,6 +1716,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "umbrella"
+     ],
+     "perf": [
+      {
+       "img": "umbrella",
+       "do": "look"
+      }
      ]
     },
     {
@@ -1522,6 +1779,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "vegetables"
+     ],
+     "perf": [
+      {
+       "img": "vegetables",
+       "do": "look"
+      }
      ]
     },
     {
@@ -1596,6 +1859,13 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "water"
+     ],
+     "perf": [
+      {
+       "img": "water",
+       "do": "flow",
+       "say": "Look! The water flows and flows!"
+      }
      ]
     },
     {
@@ -1623,6 +1893,17 @@ window.GAME_DATA = {
      "imgs": [
       "watch",
       "wheel"
+     ],
+     "perf": [
+      {
+       "img": "watch",
+       "do": "look"
+      },
+      {
+       "img": "wheel",
+       "do": "spin",
+       "say": "Look! The wheel goes round and round!"
+      }
      ]
     }
    ]
@@ -1668,6 +1949,13 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "x-ray"
+     ],
+     "perf": [
+      {
+       "img": "x-ray",
+       "do": "glow",
+       "say": "Look! The special photo shows our bones!"
+      }
      ]
     },
     {
@@ -1676,6 +1964,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "x-ray"
+     ],
+     "perf": [
+      {
+       "img": "x-ray",
+       "do": "glow"
+      }
      ]
     },
     {
@@ -1684,6 +1978,13 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "xylophone"
+     ],
+     "perf": [
+      {
+       "img": "xylophone",
+       "do": "wave",
+       "say": "Listen! Ting, ting! The xylophone makes music!"
+      }
      ]
     },
     {
@@ -1741,13 +2042,27 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "yo-yo"
+     ],
+     "perf": [
+      {
+       "img": "yo-yo",
+       "do": "updown",
+       "say": "Look! The yo-yo goes up and down!"
+      }
      ]
     },
     {
      "strand": "Technology",
      "text": "Explore how a yacht travels across water.",
      "play": "observe",
-     "page": true
+     "page": true,
+     "perf": [
+      {
+       "page": true,
+       "do": "swim",
+       "say": "Look! The yacht sails on the water!"
+      }
+     ]
     },
     {
      "strand": "Engineering",
@@ -1755,6 +2070,13 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "yo-yo"
+     ],
+     "perf": [
+      {
+       "img": "yo-yo",
+       "do": "updown",
+       "say": "Up and down! The string holds the yo-yo!"
+      }
      ]
     },
     {
@@ -1811,6 +2133,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "zebra"
+     ],
+     "perf": [
+      {
+       "img": "zebra",
+       "do": "walk"
+      }
      ]
     },
     {
@@ -1825,6 +2153,12 @@ window.GAME_DATA = {
      "play": "observe",
      "imgs": [
       "zip"
+     ],
+     "perf": [
+      {
+       "img": "zip",
+       "do": "look"
+      }
      ]
     },
     {

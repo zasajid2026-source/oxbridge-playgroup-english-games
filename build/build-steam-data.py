@@ -147,6 +147,14 @@ def main():
     for letter, cells in steam.items():
         L = by_letter[letter]
         L['steam'] = [derive(L, c) for c in cells]
+    # observe cells also carry the performance map (owner's order:
+    # observe activities are PERFORMED in the game — see perf-map.py)
+    import importlib.util
+    _spec = importlib.util.spec_from_file_location(
+        'perfmap', os.path.join(HERE, 'perf-map.py'))
+    _perfmap = importlib.util.module_from_spec(_spec)
+    _spec.loader.exec_module(_perfmap)
+    print('perf archetypes:', dict(_perfmap.apply_perf(data)))
     new = head + 'window.GAME_DATA = ' + json.dumps(data, indent=1) + ';\n'
     open(os.path.join(SITE, 'data.js'), 'w').write(new)
     # summary table for review

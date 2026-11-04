@@ -210,6 +210,79 @@ main{max-width:960px;margin:0 auto;padding:14px 14px 30px}
 .patile:active{transform:scale(.94)}
 .patile .patdot{width:62px;height:62px}
 .patile.shake{animation:shake .45s ease}
+/* ---------- STEAM Perform — observe activities are PERFORMED ----------
+   Tapping a hero picture starts its process on this stage: the ant
+   walks, the apple tree grows stage by stage, the ice melts... The
+   book crops themselves are never altered — transforms only.        */
+.perfstage{
+  position:relative;height:min(320px,47vh);min-height:250px;border-radius:22px;overflow:hidden;
+  border:4px solid #D8E4DA;background:linear-gradient(#F2F9F0 0%,#E4F1E1 62%,#EFE3BC 62.2%,#E9D9AE 100%);
+  box-shadow:inset 0 -14px 24px rgba(150,120,50,.12);margin-bottom:6px;
+}
+.perfslot{position:absolute;inset:0}
+.perfground{
+  position:absolute;left:0;right:0;bottom:0;height:34px;
+  background:linear-gradient(#E7D29C,#D9BE7E);border-top:3px solid #C9A95F;
+}
+.actor{
+  --aw:min(168px,42vw);
+  position:absolute;bottom:44px;left:50%;width:var(--aw);margin-left:calc(var(--aw) / -2);z-index:2;
+}
+.actor.wide{--aw:min(300px,76vw)}
+.actor .bob{will-change:transform}
+.actor img{
+  width:100%;aspect-ratio:1;object-fit:cover;border-radius:20px;display:block;
+  border:4px solid #fff;box-shadow:0 8px 18px rgba(11,93,67,.25);background:#fff;
+}
+.actor.wide img{aspect-ratio:auto;height:min(180px,34vh)}
+.actor.round img{border-radius:50%}
+.actor .ashadow{
+  position:absolute;left:10%;right:10%;bottom:-13px;height:15px;z-index:-1;
+  background:radial-gradient(ellipse at center,rgba(80,55,20,.38),transparent 70%);
+}
+.perflabel{
+  position:absolute;left:0;right:0;bottom:5px;z-index:4;text-align:center;
+  font-size:19px;font-weight:800;color:var(--emerald-deep);
+  text-shadow:0 1px 0 #fff,0 0 8px rgba(255,255,255,.8);padding:0 10px;
+}
+.againbtn{
+  position:absolute;top:10px;right:10px;z-index:5;font-family:inherit;cursor:pointer;
+  background:var(--gold);color:var(--emerald-deep);font-weight:800;font-size:16.5px;
+  border:3px solid #fff;border-radius:999px;padding:8px 16px;
+  box-shadow:0 5px 14px rgba(11,93,67,.3);animation:hintWiggle .7s ease 2;
+}
+.againbtn:active{transform:scale(.94)}
+.wcard .replay{
+  position:absolute;top:-12px;left:-10px;width:46px;height:46px;border-radius:50%;
+  background:var(--gold);color:#fff;font-size:25px;font-weight:800;display:none;
+  align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.25);
+}
+.wcard.canreplay .replay{display:flex;animation:starPop .5s ease}
+.fx{position:absolute;pointer-events:none;z-index:3}
+.fx.dust{width:17px;height:17px;border-radius:50%;background:radial-gradient(circle,rgba(216,196,154,.85) 0%,transparent 70%)}
+.fx.bub{width:12px;height:12px;border-radius:50%;border:2px solid rgba(110,170,220,.85);background:rgba(185,222,246,.4)}
+.fx.ring{width:130px;height:130px;border-radius:50%;border:5px solid rgba(201,162,39,.7)}
+.fx.puff{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(228,228,228,.1) 72%);filter:blur(1px)}
+.fx.drop{width:5px;height:17px;border-radius:4px;background:#5B9BD5;z-index:2;animation:rainfall .75s linear infinite}
+@keyframes rainfall{from{transform:translateY(-26px);opacity:0}18%{opacity:.9}to{transform:translateY(330px);opacity:.15}}
+.fx.halo{border-radius:50%;background:radial-gradient(circle,rgba(255,214,64,.55) 0%,rgba(255,214,64,0) 68%)}
+.fx.puddle{height:18px;border-radius:50%;background:rgba(91,155,213,.5)}
+.fx.clipdot{width:16px;height:23px;border-radius:6px;background:#9AA3A8;border:2px solid #6E777C}
+.perfbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.yostring{position:absolute;left:50%;bottom:100%;width:3px;height:76px;background:#8d8d8d;border-radius:2px;transform:translateX(-50%)}
+/* growth diagram (flat, book colour family) */
+.growwrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.growwrap svg{height:96%;max-width:min(440px,92vw)}
+.grow-el{opacity:0;transform:scale(.15);transform-box:fill-box;transform-origin:50% 100%;transition:transform .95s ease,opacity .65s ease}
+.grow-el.show{opacity:1;transform:scale(1)}
+.grow-el.hide{opacity:0;transform:scale(.5)}
+.growend{
+  position:absolute;right:8px;bottom:10px;width:min(96px,24vw);height:min(96px,24vw);object-fit:cover;
+  border-radius:16px;border:4px solid var(--gold);background:#fff;z-index:3;
+  opacity:0;transform:scale(.3) rotate(-10deg);transition:transform .6s cubic-bezier(.34,1.56,.64,1),opacity .4s;
+  box-shadow:0 8px 18px rgba(11,93,67,.3);
+}
+.growend.show{opacity:1;transform:scale(1) rotate(-3deg)}
 .sparkle{
   position:absolute;font-size:24px;pointer-events:none;z-index:5;
   animation:sparkFly .85s ease-out forwards;
@@ -607,7 +680,8 @@ async function phaseCount(){
    Mathematics) transformed into tap-play, using the corrected-edition
    texts and the page's own book pictures. Each cell: 1-4 taps, no timer,
    praise per cell, S·T·E·A·M badge fills as each strand is done. The
-   printed cell text stays visible in small type under the play area.   */
+   printed cell text stays visible in small type under the play area.
+   Observe cells are PERFORMED, not just tapped — see steamPerform.   */
 function wordObj(name){ return G.L.words.find(w => w.word === name); }
 
 async function steamObserve(cell){
@@ -630,6 +704,397 @@ async function steamObserve(cell){
         if (--left === 0) resolve();
       });
     });
+  });
+}
+/* ================= STEAM Perform — observe it HAPPEN =================
+   Owner's order: when a STEAM activity asks the child to OBSERVE a
+   process, the game PERFORMS it. Tap the ant → it walks in its natural
+   way. Tap the apple → the apple tree grows, stage by stage. The book
+   crops are never altered — every motion is transforms on the crop —
+   except the growth sequences, which are flat explanatory diagrams in
+   the book's colour family and end with the book's own fruit picture.
+   Performances run UNDER the host's spoken line (same slow voice and
+   speech gates); after a performance the hero can be tapped again to
+   replay it ("Watch again"). Mapping for all 45 observe cells lives in
+   build/perf-map.py (data.js `perf` arrays).                        */
+const waitP = ms => new Promise(r => setTimeout(r, ms));
+function A(el, frames, opts){
+  const a = el.animate(frames, Object.assign({ fill: 'forwards' }, opts || {}));
+  return a.finished.catch(() => {});
+}
+function fxSpawn(slot, cls, styles){
+  const s = document.createElement('span');
+  s.className = 'fx ' + cls;
+  Object.assign(s.style, styles || {});
+  slot.appendChild(s); return s;
+}
+function relC(el, slot){
+  const r = el.getBoundingClientRect(), s = slot.getBoundingClientRect();
+  return { cx: r.left - s.left + r.width / 2, cy: r.top - s.top + r.height / 2,
+           bottom: r.bottom - s.top, w: r.width };
+}
+const PERF_SAY = {
+  walk: w => `Look! The ${w} is walking!`,
+  hop: w => `Look! The ${w} is hopping! Hop, hop, hop!`,
+  swim: w => `Look! The ${w} is swimming!`,
+  fly: w => `Look! The ${w} is flying!`,
+  rise: w => `Look! The ${w} goes up, up, up!`,
+  roll: w => `Look! The ${w} is rolling!`,
+  spin: w => `Look! The ${w} goes round and round!`,
+  glow: w => `Look! The ${w} is shining!`,
+  melt: w => `Look! The ${w} is melting!`,
+  flow: w => `Look! The ${w} is flowing!`,
+  wave: w => `Look and listen! The ${w} makes a sound!`,
+  updown: w => `Look! The ${w} goes up and down!`,
+  attract: w => `Look! They are pulled in!`
+};
+function dustTrail(actor, slot, cls, every){
+  return setInterval(() => {
+    const c = relC(actor, slot);
+    const d = fxSpawn(slot, cls, { left: (c.cx - 8) + 'px', top: (c.bottom - 16) + 'px' });
+    A(d, [{ transform: 'scale(.4)', opacity: .55 }, { transform: 'scale(1.35) translateY(-9px)', opacity: 0 }], { duration: 700 })
+      .then(() => d.remove());
+  }, every);
+}
+const PERF_ANIM = {
+  async walk(actor, p, slot){
+    const flip = actor.querySelector('.flip'), bob = actor.querySelector('.bob');
+    const dist = Math.max(88, Math.min(slot.clientWidth * 0.30, 235));
+    const R = `translateX(${dist}px)`, L = `translateX(${-dist}px)`;
+    const bobF = { transform: ['translateY(0) rotate(-2deg)', 'translateY(-5px) rotate(2deg)',
+      'translateY(0) rotate(-2deg)', 'translateY(-5px) rotate(2deg)', 'translateY(0) rotate(-2deg)'] };
+    let dust = dustTrail(actor, slot, 'dust', 430);
+    await Promise.all([A(actor, [{ transform: R }, { transform: L }], { duration: 3600, easing: 'ease-in-out' }),
+                       A(bob, bobF, { duration: 3600 })]);
+    clearInterval(dust);
+    // pause: a little antennae-feel wiggle, then turn around
+    await A(bob, { transform: ['rotate(0deg)', 'rotate(-4deg)', 'rotate(4deg)', 'rotate(-4deg)', 'rotate(0deg)'] }, { duration: 850 });
+    await A(flip, { transform: ['scaleX(1)', 'scaleX(-1)'] }, { duration: 260 });
+    dust = dustTrail(actor, slot, 'dust', 430);
+    await Promise.all([A(actor, [{ transform: L }, { transform: R }], { duration: 3600, easing: 'ease-in-out' }),
+                       A(bob, bobF, { duration: 3600 })]);
+    clearInterval(dust);
+    await A(flip, { transform: ['scaleX(-1)', 'scaleX(1)'] }, { duration: 260 });
+  },
+  async hop(actor){
+    const xs = [-52, -26, 0, 26, 52, 26, 0, -26, -52];
+    const frames = xs.map((x, i) => ({ transform: `translateX(${x}px) translateY(${i % 2 ? -50 : 0}px)` }));
+    const bob = actor.querySelector('.bob');
+    await Promise.all([A(actor, frames, { duration: 3600, easing: 'ease-in-out' }),
+      A(bob, { transform: ['rotate(-3deg)', 'rotate(3deg)', 'rotate(-3deg)'] }, { duration: 1200, iterations: 3 })]);
+  },
+  async swim(actor, p, slot){
+    const dist = Math.max(80, Math.min(slot.clientWidth * 0.28, 220));
+    const leg = (from, to, yOff, dur) => A(actor, [
+      { transform: `translateX(${from}px) translateY(${yOff}px)` },
+      { transform: `translateX(${(from + to) / 2}px) translateY(${yOff - 15}px)` },
+      { transform: `translateX(${to}px) translateY(${yOff}px)` }], { duration: dur, easing: 'ease-in-out' });
+    const bob = actor.querySelector('.bob');
+    const bobP = A(bob, { transform: ['rotate(-6deg)', 'rotate(6deg)', 'rotate(-6deg)'] }, { duration: 1400, iterations: 5 });
+    const bub = setInterval(() => {
+      const c = relC(actor, slot);
+      const b = fxSpawn(slot, 'bub', { left: (c.cx + c.w / 3) + 'px', top: (c.cy - 6) + 'px' });
+      A(b, [{ transform: 'translateY(0)', opacity: .9 }, { transform: 'translateY(-64px)', opacity: 0 }], { duration: 1100 })
+        .then(() => b.remove());
+    }, 520);
+    await leg(dist, -dist, 0, 4000);
+    await leg(-dist, dist, -16, 3400);
+    clearInterval(bub); await bobP;
+  },
+  async fly(actor, p, slot){
+    const dist = Math.max(85, Math.min(slot.clientWidth * 0.30, 230));
+    const bob = actor.querySelector('.bob');
+    await Promise.all([
+      A(actor, [
+        { transform: `translateX(${-dist}px) translateY(6px)` },
+        { transform: `translateX(${-dist / 2}px) translateY(-72px)` },
+        { transform: `translateX(0px) translateY(-38px)` },
+        { transform: `translateX(${dist / 2}px) translateY(-78px)` },
+        { transform: `translateX(${dist}px) translateY(-24px)` },
+        { transform: `translateX(0px) translateY(0px)` }], { duration: 5600, easing: 'ease-in-out' }),
+      A(bob, { transform: ['rotate(-8deg)', 'rotate(8deg)', 'rotate(-8deg)'] }, { duration: 900, iterations: 6 })]);
+  },
+  async rise(actor, p, slot){
+    const bob = actor.querySelector('.bob');
+    const trail = setInterval(() => sparkles(actor, 2), 380);
+    await Promise.all([
+      A(actor, [{ transform: 'translateY(26px)' }, { transform: 'translateY(-104px)' }], { duration: 2700, easing: 'ease-out' }),
+      A(bob, { transform: ['rotate(-4deg)', 'rotate(4deg)', 'rotate(-4deg)', 'rotate(0deg)'] }, { duration: 2700 })]);
+    await waitP(550);
+    await A(actor, [{ transform: 'translateY(-104px)' }, { transform: 'translateY(0px)' }], { duration: 1900, easing: 'ease-in-out' });
+    clearInterval(trail);
+  },
+  async roll(actor, p, slot){
+    const img = actor.querySelector('img');
+    const dist = Math.max(85, Math.min(slot.clientWidth * 0.30, 230));
+    const bounce = p.variant === 'bounce';
+    const leg = (from, to, rFrom, rTo, dur) => Promise.all([
+      A(actor, bounce
+        ? [{ transform: `translateX(${from}px) translateY(0)` },
+           { transform: `translateX(${(from + to) / 2}px) translateY(-42px)` },
+           { transform: `translateX(${to}px) translateY(0)` }]
+        : [{ transform: `translateX(${from}px)` }, { transform: `translateX(${to}px)` }],
+        { duration: dur, easing: 'ease-in-out' }),
+      A(img, { transform: [`rotate(${rFrom}deg)`, `rotate(${rTo}deg)`] }, { duration: dur, easing: bounce ? 'ease-in-out' : 'linear' })]);
+    await leg(-dist, dist, 0, 540, 3400);
+    await leg(dist, -dist, 540, 0, 3000);
+  },
+  async spin(actor){
+    const img = actor.querySelector('img');
+    const bob = actor.querySelector('.bob');
+    await Promise.all([
+      A(img, { transform: ['rotate(0deg)', 'rotate(720deg)'] }, { duration: 3200, easing: 'ease-in-out' }),
+      A(bob, { transform: ['scale(1)', 'scale(1.07)', 'scale(1)'] }, { duration: 1600, iterations: 2 })]);
+  },
+  async glow(actor, p, slot){
+    const c = relC(actor, slot);
+    const halo = fxSpawn(slot, 'halo', { left: (c.cx - 130) + 'px', top: (c.cy - 130) + 'px', width: '260px', height: '260px', opacity: 0 });
+    const bob = actor.querySelector('.bob'), img = actor.querySelector('img');
+    await Promise.all([
+      A(img, { filter: ['brightness(1)', 'brightness(1.45)', 'brightness(1)', 'brightness(1.45)', 'brightness(1)'] }, { duration: 3200 }),
+      A(halo, { opacity: [0, .95, .25, .95, 0], transform: ['scale(.8)', 'scale(1.12)', 'scale(.95)', 'scale(1.12)', 'scale(.85)'] }, { duration: 3200 }),
+      A(bob, { transform: ['scale(1)', 'scale(1.06)', 'scale(1)'] }, { duration: 1600, iterations: 2 })]);
+    halo.remove();
+  },
+  async melt(actor, p, slot){
+    const bob = actor.querySelector('.bob');
+    if (p.variant === 'wobble'){
+      await A(bob, { transform: ['scale(1,1)', 'scale(1.14,.86)', 'scale(.92,1.1)', 'scale(1.09,.93)', 'scale(1,1)'] },
+        { duration: 1500, iterations: 2, easing: 'ease-in-out' });
+      return;
+    }
+    const c = relC(actor, slot);
+    const pud = fxSpawn(slot, 'puddle', { left: (c.cx - 30) + 'px', top: (c.bottom - 4) + 'px', width: '60px', opacity: 0 });
+    await Promise.all([
+      A(bob, { transform: ['scale(1,1) translateY(0)', 'scale(1.26,.48) translateY(30px)'] }, { duration: 3600, easing: 'ease-in' }),
+      A(actor.querySelector('img'), { opacity: [1, .93] }, { duration: 3600 }),
+      A(pud, { transform: ['scaleX(.4)', 'scaleX(2.6)'], opacity: [0, .85] }, { duration: 3600, easing: 'ease-in' })]);
+  },
+  async flow(actor, p, slot){
+    const dist = Math.max(80, Math.min(slot.clientWidth * 0.27, 210));
+    const bob = actor.querySelector('.bob');
+    const leg = (from, to, dur) => A(actor, [
+      { transform: `translateX(${from}px) translateY(0)` },
+      { transform: `translateX(${(from + to) / 2}px) translateY(-9px)` },
+      { transform: `translateX(${to}px) translateY(0)` }], { duration: dur, easing: 'ease-in-out' });
+    const bobP = A(bob, { transform: ['rotate(-3deg)', 'rotate(3deg)', 'rotate(-3deg)'] }, { duration: 1800, iterations: 3 });
+    await leg(-dist, dist, 3300);
+    await leg(dist, -dist, 3000);
+    await bobP;
+  },
+  async wave(actor, p, slot){
+    const bob = actor.querySelector('.bob');
+    const c = relC(actor, slot);
+    if (p.variant === 'steam'){
+      const puffs = [];
+      for (let i = 0; i < 6; i++){
+        const pf = fxSpawn(slot, 'puff', { left: (c.cx - 23 + (i % 3 - 1) * 17) + 'px', top: (c.cy - c.w / 2 - 20) + 'px', opacity: 0 });
+        puffs.push(A(pf, [{ transform: 'translateY(0) scale(.5)', opacity: 0 },
+          { transform: 'translateY(-38px) scale(.95)', opacity: .9, offset: .35 },
+          { transform: 'translateY(-102px) scale(1.55)', opacity: 0 }], { duration: 2100, delay: i * 420, easing: 'ease-out' })
+          .then(() => pf.remove()));
+      }
+      await Promise.all([...puffs, A(bob, { transform: ['rotate(-1.6deg)', 'rotate(1.6deg)', 'rotate(-1.6deg)'] }, { duration: 800, iterations: 4 })]);
+      return;
+    }
+    const rings = [];
+    for (let i = 0; i < 3; i++){
+      const r = fxSpawn(slot, 'ring', { left: (c.cx - 65) + 'px', top: (c.cy - 65) + 'px', opacity: 0 });
+      rings.push(A(r, [{ transform: 'scale(.32)', opacity: .8 }, { transform: 'scale(1.75)', opacity: 0 }],
+        { duration: 1500, delay: i * 480, easing: 'ease-out' }).then(() => r.remove()));
+    }
+    await Promise.all([...rings, A(bob, { transform: ['scale(1)', 'scale(1.07)', 'scale(1)'] }, { duration: 900, iterations: 3 })]);
+  },
+  async updown(actor, p, slot){
+    const s = document.createElement('div');
+    s.className = 'yostring'; actor.appendChild(s);
+    await A(actor, { transform: ['translateY(0)', 'translateY(-56px)', 'translateY(0)', 'translateY(-56px)', 'translateY(0)', 'translateY(-56px)', 'translateY(0)'] },
+      { duration: 3100, easing: 'ease-in-out' });
+    s.remove();
+  },
+  async attract(actor, p, slot){
+    const c = relC(actor, slot);
+    const spots = [[36, 30], [slot.clientWidth - 60, 44], [52, slot.clientHeight - 70]];
+    const pulls = spots.map(([x, y], i) => {
+      const d = fxSpawn(slot, 'clipdot', { left: x + 'px', top: y + 'px' });
+      return A(d, [{ transform: 'translate(0,0) rotate(0deg)' },
+        { transform: `translate(${c.cx - x - 8}px, ${c.cy - y - 11}px) rotate(160deg)` }],
+        { duration: 1500, delay: i * 260, easing: 'ease-in' }).then(() => d.remove());
+    });
+    const bob = actor.querySelector('.bob');
+    await Promise.all([...pulls, A(bob, { transform: ['scale(1)', 'scale(1.08)', 'scale(1)'] }, { duration: 750, delay: 1300 })]);
+  },
+  async look(actor){
+    const bob = actor.querySelector('.bob');
+    sparkles(actor, 6);
+    await Promise.all([A(bob, { transform: ['scale(1)', 'scale(1.06)', 'scale(1)'] }, { duration: 1150 }), waitP(1150)]);
+  }
+};
+/* rain falls over the static book page (U Science) */
+async function perfRain(slot, L){
+  slot.innerHTML = `<img class="perfbg" src="${L.pageImg}" alt="Your book page">`;
+  for (let i = 0; i < 16; i++){
+    fxSpawn(slot, 'drop', { left: (4 + Math.random() * 92) + '%', top: '-24px',
+      animationDelay: (Math.random() * 0.9) + 's', animationDuration: (0.65 + Math.random() * 0.4) + 's' });
+  }
+  await waitP(4600);
+  slot.innerHTML = '';
+}
+/* ---- growth diagrams: flat shapes in the book's colour family ---- */
+const PERF_FRUITS = {
+  apple: { color: '#E23B3B', adj: 'Red', plural: 'apples' },
+  grapes: { color: '#7B4FA6', adj: 'Purple', plural: 'grapes' },
+  tomato: { color: '#E2483D', adj: 'Red', plural: 'tomatoes' }
+};
+function growSVG(kind, F){
+  const flowers = [[118, 80], [150, 56], [184, 78], [134, 102], [168, 102], [150, 86]].map(([x, y]) =>
+    `<g>${[[-4.6, 0], [4.6, 0], [0, -4.6], [0, 4.6]].map(([dx, dy]) =>
+      `<circle cx="${x + dx}" cy="${y + dy}" r="3.4" fill="#F6B8D0"/>`).join('')}<circle cx="${x}" cy="${y}" r="2.2" fill="#FFE082"/></g>`).join('');
+  const fruitTree = [[112, 96], [148, 68], [186, 94], [130, 118], [170, 118], [150, 94]].map(([x, y]) =>
+    `<g><path d="M${x} ${y - 9} q1 -6 6 -8" stroke="#5D7A1E" stroke-width="2.4" fill="none"/><circle cx="${x}" cy="${y}" r="9.5" fill="${F.color}"/></g>`).join('');
+  const fruitPlant = F.plural === 'grapes'
+    ? `<path d="M152 62 L152 76" stroke="#2E8B3E" stroke-width="4"/>` +
+      [[144, 84], [160, 84], [138, 96], [152, 96], [166, 96], [146, 108], [160, 108]].map(([x, y]) =>
+        `<circle cx="${x}" cy="${y}" r="6.6" fill="${F.color}"/>`).join('')
+    : [[126, 152], [172, 128], [148, 102]].map(([x, y]) =>
+        `<g><circle cx="${x}" cy="${y}" r="10.5" fill="${F.color}"/><circle cx="${x}" cy="${y - 10}" r="3.6" fill="#37A24B"/></g>`).join('');
+  const soil = `<ellipse cx="150" cy="208" rx="120" ry="14" fill="#9C6B3F"/><ellipse cx="150" cy="201" rx="88" ry="11" fill="#7C4F27"/>`;
+  const seed = `<g class="grow-el gs-seed"><ellipse cx="150" cy="196" rx="8" ry="5.5" fill="#5D3A1A"/></g>`;
+  const sprout = `<g class="grow-el gs-sprout"><path d="M150 198 L150 176" stroke="#37A24B" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="139" cy="172" rx="11" ry="5.5" fill="#37A24B" transform="rotate(-28 139 172)"/>
+    <ellipse cx="161" cy="168" rx="11" ry="5.5" fill="#4CAF50" transform="rotate(24 161 168)"/></g>`;
+  if (kind === 'grow-tree'){
+    return `<svg viewBox="0 0 300 230" role="img" aria-label="How an apple tree grows">
+      ${soil}${seed}${sprout}
+      <g class="grow-el gs-plant"><path d="M150 200 C148 170 152 150 150 128" stroke="#2E8B3E" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <ellipse cx="132" cy="158" rx="14" ry="7" fill="#37A24B" transform="rotate(-30 132 158)"/>
+        <ellipse cx="168" cy="146" rx="14" ry="7" fill="#4CAF50" transform="rotate(26 168 146)"/>
+        <ellipse cx="136" cy="128" rx="12" ry="6" fill="#2E8B3E" transform="rotate(-20 136 128)"/>
+        <ellipse cx="164" cy="116" rx="12" ry="6" fill="#37A24B" transform="rotate(20 164 116)"/></g>
+      <g class="grow-el gs-tree"><path d="M141 202 L146 118 Q150 110 154 118 L159 202 Z" fill="#8A5A33"/>
+        <circle cx="108" cy="92" r="36" fill="#2E8B3E"/><circle cx="150" cy="72" r="44" fill="#37A24B"/>
+        <circle cx="192" cy="92" r="36" fill="#4CAF50"/><circle cx="128" cy="104" r="30" fill="#4CAF50"/>
+        <circle cx="172" cy="104" r="30" fill="#2E8B3E"/></g>
+      <g class="grow-el gs-flowers">${flowers}</g>
+      <g class="grow-el gs-fruit">${fruitTree}</g></svg>`;
+  }
+  return `<svg viewBox="0 0 300 230" role="img" aria-label="How the plant grows">
+    ${soil}${seed}${sprout}
+    <g class="grow-el gs-plant"><path d="M150 200 C138 160 168 130 152 92" stroke="#2E8B3E" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <ellipse cx="134" cy="168" rx="13" ry="6.5" fill="#37A24B" transform="rotate(-26 134 168)"/>
+      <ellipse cx="166" cy="140" rx="13" ry="6.5" fill="#4CAF50" transform="rotate(24 166 140)"/>
+      <ellipse cx="140" cy="112" rx="12" ry="6" fill="#2E8B3E" transform="rotate(-18 140 112)"/></g>
+    <g class="grow-el gs-leaves"><ellipse cx="126" cy="146" rx="16" ry="8" fill="#4CAF50" transform="rotate(-32 126 146)"/>
+      <ellipse cx="172" cy="112" rx="16" ry="8" fill="#37A24B" transform="rotate(28 172 112)"/>
+      <ellipse cx="158" cy="82" rx="14" ry="7" fill="#2E8B3E" transform="rotate(14 158 82)"/>
+      <path d="M152 92 q16 -4 14 -18" stroke="#2E8B3E" stroke-width="3.4" fill="none" stroke-linecap="round"/></g>
+    <g class="grow-el gs-fruit">${fruitPlant}</g></svg>`;
+}
+async function perfGrow(slot, label, p, L){
+  const F = PERF_FRUITS[p.fruit] || PERF_FRUITS.apple;
+  const w = wordObj(p.img);
+  slot.innerHTML = `<div class="growwrap">${growSVG(p.do, F)}<img class="growend" src="${w.img}" alt="${w.word}"></div>`;
+  const svg = slot.querySelector('svg');
+  const stages = p.do === 'grow-tree' ? [
+    ['.gs-seed', 'A tiny seed in the soil.'],
+    ['.gs-sprout', 'A little sprout comes out!'],
+    ['.gs-plant', 'It grows into a small plant.'],
+    ['.gs-tree', 'Now it is a big tree!'],
+    ['.gs-flowers', 'Pretty flowers grow on the tree!'],
+    ['.gs-fruit', `${F.adj} ${F.plural} grow on the tree!`]
+  ] : [
+    ['.gs-seed', 'A tiny seed in the soil.'],
+    ['.gs-sprout', 'A little sprout comes out!'],
+    ['.gs-plant', 'It grows into a green plant.'],
+    ['.gs-leaves', 'Leaves grow and grow!'],
+    ['.gs-fruit', `${F.adj} ${F.plural} grow!`]
+  ];
+  const swap = { '.gs-sprout': '.gs-seed', '.gs-plant': '.gs-sprout', '.gs-tree': '.gs-plant' };
+  for (const [sel, line] of stages){
+    if (swap[sel]){ const prev = svg.querySelector(swap[sel]); if (prev) prev.classList.add('hide'); }
+    const el = svg.querySelector(sel);
+    if (el) el.classList.add('show');
+    label.textContent = line;
+    Music.sfx('pop');
+    await Promise.all([Voice.say(line), waitP(1950)]);
+  }
+  const end = slot.querySelector('.growend');
+  end.classList.add('show');
+  sparkles(end, 9); Music.sfx('good');
+  label.textContent = `Your book ${w.word}!`;
+  await Promise.all([Voice.say(`Look! Your book ${w.say}!`), waitP(1100)]);
+}
+async function runPerformance(slot, label, p, L){
+  slot.innerHTML = ''; label.textContent = '';
+  if (p.do === 'grow-tree' || p.do === 'grow-plant') return perfGrow(slot, label, p, L);
+  if (p.do === 'flow' && p.variant === 'rain'){
+    label.textContent = p.say || '';
+    await Promise.all([perfRain(slot, L), p.say ? Voice.say(p.say) : Promise.resolve()]);
+    return;
+  }
+  const w = p.page ? null : wordObj(p.img);
+  const src = p.page ? L.pageImg : w.img;
+  const say = p.say || (PERF_SAY[p.do] && w ? PERF_SAY[p.do](w.say) : null);
+  const round = p.do === 'roll' || p.do === 'spin';
+  slot.innerHTML = `<div class="actor${round ? ' round' : ''}${p.page ? ' wide' : ''}">
+      <div class="flip"><div class="bob"><img src="${src}" alt="${w ? w.word : 'Your book page'}"></div></div>
+      <div class="ashadow"></div></div>`;
+  const actor = slot.firstElementChild;
+  label.textContent = say || '';
+  const animP = (PERF_ANIM[p.do] || PERF_ANIM.look)(actor, p, slot);
+  await Promise.all([animP, say ? Voice.say(say) : Promise.resolve(), waitP(900)]);
+}
+function perfLabel(p, L){ return p.page ? 'book page' : wordObj(p.img).say; }
+async function steamPerform(cell){
+  const L = G.L, play = $('#steamPlay');
+  if (!cell.perf || !cell.perf.length) return steamObserve(cell);
+  await sayBubble(cell.text);
+  play.innerHTML = `
+    <div class="perfstage" id="perfStage">
+      <div class="perfground"></div>
+      <div class="perfslot" id="perfSlot"></div>
+      <div class="perflabel" id="perfLabel"></div>
+      <button class="againbtn" id="againBtn" hidden>↻ Watch again!</button>
+    </div>
+    <div class="cards">${cell.perf.map((p, i) => {
+      const src = p.page ? L.pageImg : wordObj(p.img).img;
+      const label = p.page ? 'Your book page' : wordObj(p.img).word;
+      return `<button class="wcard obspic perfhero${p.page ? ' page' : ''}" data-perf="${i}">
+        <img src="${src}" alt="${label}"><span class="tick">✓</span><span class="replay">↻</span>
+        <div class="wl">${label}</div></button>`;
+    }).join('')}</div>`;
+  const slot = $('#perfSlot'), label = $('#perfLabel'), againBtn = $('#againBtn');
+  const heroes = [...play.querySelectorAll('.perfhero')];
+  const done = new Set();
+  let busy = false, lastIdx = -1, graceTimer = null, resolved = false;
+  return new Promise(resolve => {
+    const maybeFinish = () => {
+      if (resolved || busy || done.size < cell.perf.length) return;
+      clearTimeout(graceTimer);
+      graceTimer = setTimeout(() => {
+        if (!resolved && !busy){ resolved = true; resolve(); }
+      }, 1600);
+    };
+    const promptNext = () => {
+      const nxt = cell.perf.findIndex((p, i) => !done.has(i));
+      if (nxt >= 0) sayBubble(`Tap the ${perfLabel(cell.perf[nxt], L)}!`);
+    };
+    const runPerf = async idx => {
+      if (busy || resolved) return;
+      busy = true; clearTimeout(graceTimer); againBtn.hidden = true;
+      lastIdx = idx;
+      await runPerformance(slot, label, cell.perf[idx], L);
+      if (!done.has(idx)){ done.add(idx); heroes[idx].classList.add('done'); }
+      heroes[idx].classList.add('canreplay');
+      busy = false;
+      againBtn.hidden = false;
+      Music.sfx('good');
+      if (done.size < cell.perf.length) promptNext();
+      maybeFinish();
+    };
+    heroes.forEach((h, i) => h.addEventListener('click', () => { Music.sfx('pop'); runPerf(i); }));
+    againBtn.addEventListener('click', () => { if (lastIdx >= 0) runPerf(lastIdx); });
+    promptNext();
   });
 }
 async function steamTap(cell){
@@ -837,7 +1302,7 @@ async function steamPattern(){
 }
 async function phaseSteam(){
   const L = G.L;
-  const RENDER = { observe: steamObserve, tap: steamTap, count: steamCount,
+  const RENDER = { observe: steamPerform, tap: steamTap, count: steamCount,
     count3: steamCount3, sort: steamSort, colour: steamColour,
     build: steamBuild, pattern: steamPattern };
   stage.innerHTML = `<div class="phase">
