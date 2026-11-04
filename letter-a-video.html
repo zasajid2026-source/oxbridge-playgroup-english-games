@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Letter A — My Book Comes Alive! · Oxbridge Playgroup English</title>
+<link rel="icon" href="data:,">
+<style>
+:root{
+  --emerald:#0B5D43; --emerald-deep:#07382A; --gold:#C9A227; --gold-soft:#E9CE7A;
+  --ivory:#FBF7EC; --ink:#22332B; --card:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:"Baloo 2","Comic Sans MS","Chalkboard SE","Segoe UI",system-ui,sans-serif;
+  background:linear-gradient(180deg,#EAF4EC 0%,var(--ivory) 55%,#F6ECD2 100%);
+  color:var(--ink); touch-action:manipulation; user-select:none;-webkit-user-select:none;
+  overflow-x:hidden;
+}
+/* ---------- header ---------- */
+header{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;flex-wrap:wrap;
+  background:var(--emerald);color:#fff;position:sticky;top:0;z-index:40;
+  box-shadow:0 3px 10px rgba(7,56,42,.35);
+}
+.backbtn{
+  border:2px solid var(--gold);background:var(--emerald-deep);color:#fff;border-radius:999px;
+  font-weight:700;font-size:13.5px;padding:9px 13px;text-decoration:none;white-space:nowrap;
+  display:flex;align-items:center;min-height:44px;
+}
+.backbtn:active{transform:scale(.96)}
+.brand{min-width:0;flex:1}
+.brand h1{font-size:19px;line-height:1.15;color:#fff;font-weight:800}
+.brand small{display:block;font-size:11.5px;letter-spacing:.4px;color:var(--gold-soft);margin-top:2px;font-weight:600}
+.tgl{
+  border:2px solid var(--gold);background:var(--emerald-deep);color:#fff;border-radius:999px;
+  font-family:inherit;font-weight:700;font-size:13px;padding:8px 12px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;min-height:44px;
+}
+.tgl .ico{font-size:17px}
+.tgl.off{opacity:.55;border-color:#9db8ab}
+.tgl:active{transform:scale(.96)}
+@media (max-width:560px){
+  .tgl .lbl{display:none}
+  .tgl{padding:8px 10px}
+  .brand h1{font-size:16px}
+  .backbtn{font-size:12.5px;padding:8px 10px}
+}
+/* ---------- layout ---------- */
+main{max-width:960px;margin:0 auto;padding:14px 14px 30px}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.stars{display:flex;gap:4px;font-size:30px;line-height:1}
+.stars .st{filter:grayscale(1);opacity:.35;transition:all .3s}
+.stars .st.on{filter:none;opacity:1;animation:starPop .6s ease}
+@keyframes starPop{0%{transform:scale(.2) rotate(-40deg)}60%{transform:scale(1.5) rotate(10deg)}100%{transform:scale(1)}}
+.watchbtn{
+  margin-left:auto;display:none;background:var(--gold);color:#fff;border:3px solid var(--emerald);
+  font-family:inherit;font-weight:800;font-size:16px;padding:9px 16px;border-radius:999px;cursor:pointer;
+  box-shadow:0 4px 12px rgba(201,162,39,.45);align-items:center;gap:6px;min-height:48px;
+}
+.watchbtn:active{transform:scale(.95)}
+/* ---------- host row ---------- */
+.hostrow{display:flex;gap:12px;align-items:flex-end;margin-bottom:12px}
+.hostwrap{position:relative;flex:0 0 84px}
+.hostwrap img{
+  width:84px;height:84px;object-fit:cover;border-radius:50%;border:4px solid var(--gold);
+  box-shadow:0 6px 14px rgba(11,93,67,.25);display:block;background:#DCEDE1;
+}
+.hostwrap.talking img{animation:talkBob .36s ease-in-out infinite alternate}
+@keyframes talkBob{from{transform:translateY(0) rotate(-1.2deg)}to{transform:translateY(-5px) rotate(1.2deg)}}
+.hostwrap.cheer img{animation:cheerJump .55s ease}
+@keyframes cheerJump{0%{transform:translateY(0)}35%{transform:translateY(-18px) scale(1.06)}70%{transform:translateY(2px)}100%{transform:none}}
+.bubble{
+  flex:1;background:#FFF8E1;border:3px solid var(--gold);border-radius:18px;padding:12px 16px;
+  font-size:21px;font-weight:700;color:var(--emerald-deep);min-height:64px;display:flex;align-items:center;
+  position:relative;line-height:1.3;
+}
+.bubble::before{
+  content:"";position:absolute;left:-13px;bottom:22px;border:7px solid transparent;
+  border-right:10px solid var(--gold);
+}
+/* ---------- book page stage ---------- */
+#stageCard{
+  background:var(--card);border:3px solid var(--emerald);border-radius:26px;
+  padding:14px;box-shadow:0 10px 24px rgba(11,93,67,.14);position:relative;
+}
+#pagewrap{
+  position:relative;width:100%;max-width:560px;margin:0 auto;border-radius:14px;overflow:hidden;
+  box-shadow:0 4px 16px rgba(7,56,42,.25);background:#dcefe2;
+}
+#pagewrap img{display:block;width:100%;height:auto}
+.hot{
+  position:absolute;background:transparent;border:none;cursor:pointer;border-radius:18px;z-index:2;
+  font-family:inherit;padding:0;
+}
+.hot .tick{
+  position:absolute;top:3px;right:3px;width:34px;height:34px;border-radius:50%;
+  background:var(--gold);color:#fff;font-size:20px;font-weight:800;display:none;
+  align-items:center;justify-content:center;border:3px solid #fff;
+  box-shadow:0 3px 8px rgba(0,0,0,.3);line-height:1;
+}
+.hot.done .tick{display:flex}
+.hot.target::before{
+  content:"";position:absolute;inset:0;border-radius:18px;background:rgba(201,162,39,.16);
+}
+.hot.target::after{
+  content:"";position:absolute;inset:0;border-radius:18px;border:5px solid var(--gold);
+  box-shadow:0 0 0 4px rgba(11,93,67,.35),0 0 24px rgba(201,162,39,.85),inset 0 0 18px rgba(201,162,39,.35);
+  animation:ringPulse 1s ease-in-out infinite;
+}
+@keyframes ringPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.sparkle{position:absolute;font-size:22px;pointer-events:none;z-index:5;animation:sparkFly .9s ease-out forwards}
+@keyframes sparkFly{to{transform:translate(var(--dx),var(--dy)) scale(1.3) rotate(40deg);opacity:0}}
+.hint{text-align:center;margin-top:12px;font-size:16.5px;font-weight:700;color:#47604f}
+.foot{text-align:center;margin-top:18px;color:#7c8f83;font-size:13px;font-weight:600}
+.foot b{color:var(--emerald)}
+/* ---------- video overlay ---------- */
+#vidOverlay{
+  position:fixed;inset:0;background:rgba(7,56,42,.74);z-index:80;
+  display:flex;align-items:center;justify-content:center;padding:14px;
+}
+#vidOverlay[hidden]{display:none}
+.vframe{
+  position:relative;background:#fff;border:4px solid var(--gold);border-radius:26px;padding:10px;
+  width:min(94vw,58vh,540px);box-shadow:0 18px 50px rgba(0,0,0,.45);
+  animation:frameIn .3s ease;
+}
+@keyframes frameIn{from{opacity:0;transform:scale(.9) translateY(14px)}to{opacity:1;transform:none}}
+.vframe video{width:100%;height:auto;display:block;border-radius:18px;background:#101510}
+.vcap{text-align:center;font-weight:800;font-size:23px;color:var(--emerald-deep);padding:9px 0 3px}
+#vidClose{
+  position:absolute;top:-15px;right:-9px;width:50px;height:50px;border-radius:50%;
+  background:var(--emerald);color:#fff;border:3px solid var(--gold);font-size:22px;font-weight:800;
+  cursor:pointer;z-index:2;box-shadow:0 5px 14px rgba(0,0,0,.35);font-family:inherit;line-height:1;
+}
+#vidClose:active{transform:scale(.92)}
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:90;display:none}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="backbtn" href="index.html" aria-label="Back to games">← Back to Games</a>
+  <div class="brand">
+    <h1>Letter A — My Book Comes Alive! 🎬</h1>
+    <small>Oxbridge Playgroup English · Page 2</small>
+  </div>
+  <button class="tgl" id="tglVoice" aria-label="Toggle voice"><span class="ico">🔊</span><span class="lbl">Voice</span></button>
+  <button class="tgl" id="tglMusic" aria-label="Toggle music"><span class="ico">🎵</span><span class="lbl">Music</span></button>
+</header>
+
+<main>
+  <div class="topbar">
+    <div class="stars" id="starBar" aria-hidden="true">
+      <span class="st">⭐</span><span class="st">⭐</span><span class="st">⭐</span><span class="st">⭐</span>
+    </div>
+    <button class="watchbtn" id="watchBtn">↻ Watch again</button>
+  </div>
+
+  <div class="hostrow">
+    <div class="hostwrap" id="hostWrap"><img src="img/host-boy.webp" alt="Your friend from the book"></div>
+    <div class="bubble" id="hostBubble">This is your book page! Touch A!</div>
+  </div>
+
+  <div id="stageCard">
+    <div id="pagewrap">
+      <img id="pageImg" src="img/page-a-full.webp" alt="Letter A page from your book">
+      <button class="hot" data-id="a"     style="left:8%;top:5%;width:30%;height:21%"  aria-label="Letter A"><span class="tick">✓</span></button>
+      <button class="hot" data-id="axe"   style="left:2%;top:30%;width:28%;height:20%" aria-label="Axe"><span class="tick">✓</span></button>
+      <button class="hot" data-id="apple" style="left:22%;top:47%;width:25%;height:20%" aria-label="Apple"><span class="tick">✓</span></button>
+      <button class="hot" data-id="ant"   style="left:46%;top:54%;width:21%;height:14%" aria-label="Ant"><span class="tick">✓</span></button>
+    </div>
+    <p class="hint">👆 Tap the glowing picture on your book page!</p>
+  </div>
+
+  <p class="foot">Part of <b>Oxbridge Playgroup English — Learning Games</b></p>
+</main>
+
+<div id="vidOverlay" hidden>
+  <div class="vframe">
+    <button id="vidClose" aria-label="Close video">✕</button>
+    <video id="vid" playsinline preload="auto"></video>
+    <div class="vcap" id="vidCap">A</div>
+  </div>
+</div>
+
+<canvas id="confetti" width="1200" height="800"></canvas>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const bubble = $('#hostBubble'), hostWrap = $('#hostWrap'), pagewrap = $('#pagewrap');
+
+/* ================= VOICE — female Pakistani / Indian English, slow =================
+   Same picker + Speech-Gate (Standard 13) FIFO queue as the main games:
+   en-PK female → en-IN female → en-IN any → en-GB/US female → en-PK any.
+   Rate 0.82, pitch 1.05. A gated line must finish before the flow moves;
+   VOICE OFF releases every gate instantly.                              */
+const Voice = {
+  enabled: true, rate: 0.82, pitch: 1.05,
+  voice: null, queue: [], busy: false, token: 0, current: null,
+  FEMALE: /female|heera|neerja|veena|swara|asha|ananya|kavya|priya|meera|zira|samantha|anita|sunita/i,
+  score(v){
+    const name = v.name || '', lang = (v.lang || '').toLowerCase().replace('_','-');
+    const fem = this.FEMALE.test(name);
+    if (lang.indexOf('en-pk') === 0 && fem) return 100;
+    if (lang.indexOf('en-in') === 0 && fem) return 90;
+    if (lang.indexOf('en-in') === 0) return 80;
+    if (lang.indexOf('en-gb') === 0 && fem) return 70;
+    if (lang.indexOf('en-us') === 0 && fem) return 65;
+    if (lang.indexOf('en-pk') === 0) return 60;
+    if (lang.indexOf('en-gb') === 0) return 50;
+    if (lang.indexOf('en-us') === 0) return 45;
+    if (lang.indexOf('en') === 0) return 30;
+    return -1;
+  },
+  pick(){
+    if (!('speechSynthesis' in window)) return;
+    const vs = speechSynthesis.getVoices();
+    let best = null, bs = -1;
+    for (const v of vs){ const s = this.score(v); if (s > bs){ bs = s; best = v; } }
+    this.voice = best;
+  },
+  say(text){
+    return new Promise(resolve => {
+      if (!this.enabled || !('speechSynthesis' in window)){ resolve(); return; }
+      this.queue.push({ text, resolve });
+      this.pump();
+    });
+  },
+  pump(){
+    if (this.busy || !this.queue.length){ this.syncHost(); return; }
+    const item = this.queue.shift();
+    this.current = item;
+    this.busy = true; this.syncHost();
+    const my = ++this.token;
+    let done = false;
+    const finish = () => {
+      if (done || my !== this.token) return;
+      done = true; clearTimeout(wd);
+      if (this.current === item) this.current = null;
+      this.busy = false; item.resolve(); this.pump();
+    };
+    const words = item.text.trim().split(/\s+/).length;
+    const wd = setTimeout(() => { try{ speechSynthesis.cancel(); }catch(e){} finish(); },
+      Math.min(25000, Math.max(4000, 1800 + 620 * words)));
+    try {
+      const u = new SpeechSynthesisUtterance(item.text);
+      if (this.voice) u.voice = this.voice;
+      u.rate = this.rate; u.pitch = this.pitch;
+      u.onend = finish; u.onerror = finish;
+      speechSynthesis.speak(u);
+    } catch(e){ finish(); }
+  },
+  stop(){
+    if (!('speechSynthesis' in window)) return;
+    this.token++;
+    try{ speechSynthesis.cancel(); }catch(e){}
+    const q = this.queue; this.queue = [];
+    const cur = this.current; this.current = null;
+    this.busy = false;
+    q.forEach(i => i.resolve());
+    if (cur) cur.resolve();
+    this.syncHost();
+  },
+  syncHost(){
+    hostWrap.classList.toggle('talking', this.enabled && (this.busy || this.queue.length > 0));
+    Music.duck(this.busy || this.queue.length > 0);
+  },
+  setEnabled(on){
+    this.enabled = on;
+    if (!on) this.stop();
+    this.syncHost();
+  },
+  cheer(){
+    hostWrap.classList.remove('cheer'); void hostWrap.offsetWidth;
+    hostWrap.classList.add('cheer');
+  }
+};
+if ('speechSynthesis' in window){
+  Voice.pick();
+  speechSynthesis.onvoiceschanged = () => Voice.pick();
+}
+
+/* ================= MUSIC + SFX (WebAudio synth, soft — same recipe as the main games) ================= */
+const Music = {
+  ctx: null, master: null, sfxGain: null, on: true, timer: null, step: 0,
+  NOTES: [329.6, 392.0, 440.0, 392.0, 329.6, 293.7, 261.6, 293.7], // E G A G E D C D
+  ensure(){
+    if (this.ctx) { if (this.ctx.state === 'suspended') this.ctx.resume(); return; }
+    try {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      this.master = this.ctx.createGain(); this.master.gain.value = 0.0;
+      this.master.connect(this.ctx.destination);
+      this.sfxGain = this.ctx.createGain(); this.sfxGain.gain.value = 0.16;
+      this.sfxGain.connect(this.ctx.destination);
+      this.master.gain.linearRampToValueAtTime(this.on ? 0.05 : 0.0, this.ctx.currentTime + 1.2);
+      this.timer = setInterval(() => this.tick(), 460);
+    } catch(e){}
+  },
+  tick(){
+    if (!this.ctx || !this.on) return;
+    const t = this.ctx.currentTime;
+    const f = this.NOTES[this.step % this.NOTES.length];
+    this.tone(f, t, 0.42, 'triangle', 0.5, this.master);
+    if (this.step % 4 === 0) this.tone(130.8, t, 0.9, 'sine', 0.35, this.master); // soft C bass
+    this.step++;
+  },
+  tone(freq, t, dur, type, vol, dest){
+    const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(vol, t + 0.04);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g); g.connect(dest); o.start(t); o.stop(t + dur + 0.05);
+  },
+  duck(on){
+    if (!this.ctx || !this.master) return;
+    const target = this.on ? (on ? 0.015 : 0.05) : 0.0;
+    this.master.gain.cancelScheduledValues(this.ctx.currentTime);
+    this.master.gain.linearRampToValueAtTime(target, this.ctx.currentTime + 0.25);
+  },
+  setOn(on){
+    this.on = on;
+    if (this.ctx && this.master){
+      this.master.gain.cancelScheduledValues(this.ctx.currentTime);
+      this.master.gain.linearRampToValueAtTime(on ? 0.05 : 0.0, this.ctx.currentTime + 0.3);
+    }
+  },
+  sfx(kind){
+    if (!this.ctx) return;
+    const t = this.ctx.currentTime;
+    if (kind === 'pop'){ this.tone(620, t, 0.12, 'square', 0.25, this.sfxGain); this.tone(930, t + 0.05, 0.12, 'square', 0.2, this.sfxGain); }
+    else if (kind === 'good'){ [523.3, 659.3, 783.0].forEach((f, i) => this.tone(f, t + i * 0.09, 0.22, 'triangle', 0.5, this.sfxGain)); }
+    else if (kind === 'star'){ [783.0, 987.8, 1174.7].forEach((f, i) => this.tone(f, t + i * 0.1, 0.3, 'sine', 0.5, this.sfxGain)); }
+    else if (kind === 'try'){ this.tone(220, t, 0.25, 'sine', 0.35, this.sfxGain); this.tone(196, t + 0.12, 0.3, 'sine', 0.3, this.sfxGain); }
+    else if (kind === 'fanfare'){ [523.3, 659.3, 783.0, 1046.5].forEach((f, i) => this.tone(f, t + i * 0.13, 0.4, 'triangle', 0.55, this.sfxGain)); }
+  }
+};
+
+/* ================= helpers ================= */
+const PRAISE = ['Well done!', 'Great job!', 'Wonderful!', 'Super!', 'Very good!', 'You did it!'];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+function sparkles(el, n){
+  const r = el.getBoundingClientRect(), sr = pagewrap.getBoundingClientRect();
+  const cx = r.left - sr.left + r.width / 2, cy = r.top - sr.top + r.height / 2;
+  for (let i = 0; i < (n || 8); i++){
+    const s = document.createElement('span');
+    s.className = 'sparkle'; s.textContent = pick(['⭐','✨','🌟','💛']);
+    s.style.left = cx + 'px'; s.style.top = cy + 'px';
+    s.style.setProperty('--dx', (Math.random() * 170 - 85) + 'px');
+    s.style.setProperty('--dy', (Math.random() * -130 - 10) + 'px');
+    pagewrap.appendChild(s); setTimeout(() => s.remove(), 900);
+  }
+}
+const Confetti = {
+  parts: [], raf: null,
+  burst(n){
+    const cv = $('#confetti'); cv.style.display = 'block';
+    cv.width = innerWidth; cv.height = innerHeight;
+    const colors = ['#0B5D43', '#C9A227', '#E9CE7A', '#ffffff', '#F2A7C3'];
+    for (let i = 0; i < (n || 90); i++){
+      this.parts.push({ x: Math.random() * cv.width, y: -20 - Math.random() * cv.height * 0.35,
+        w: 6 + Math.random() * 7, h: 8 + Math.random() * 8, vy: 2 + Math.random() * 3.2,
+        vx: Math.random() * 2 - 1, rot: Math.random() * 6.3, vr: Math.random() * 0.2 - 0.1,
+        c: colors[i % colors.length] });
+    }
+    if (!this.raf) this.loop();
+  },
+  loop(){
+    const cv = $('#confetti'), ctx = cv.getContext('2d');
+    const step = () => {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      this.parts = this.parts.filter(p => p.y < cv.height + 30);
+      for (const p of this.parts){
+        p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
+      }
+      if (this.parts.length){ this.raf = requestAnimationFrame(step); }
+      else { this.raf = null; cv.style.display = 'none'; }
+    };
+    this.raf = requestAnimationFrame(step);
+  }
+};
+
+/* ================= THE GUIDED FLOW =================
+   A → ant → apple → axe. Only the glowing picture is the right tap;
+   a wrong picture gets a kind naming correction. After the axe the
+   page celebrates and every picture becomes free-play.              */
+const STEPS = [
+  { id:'a',     word:'A',     emoji:'🔤', that:'the letter A', touch:'A',
+    video:'videos/video-a.mp4',     prompt:'This is your book page! Touch A!',
+    openLine:'A! A says ah! I am A!' },
+  { id:'ant',   word:'Ant',   emoji:'🐜', that:'the ant',   touch:'the ant',
+    video:'videos/video-ant.mp4',   prompt:'Now touch the ant!' },
+  { id:'apple', word:'Apple', emoji:'🍎', that:'the apple', touch:'the apple',
+    video:'videos/video-apple.mp4', prompt:'Now touch the apple!' },
+  { id:'axe',   word:'Axe',   emoji:'🪓', that:'the axe',   touch:'the axe',
+    video:'videos/video-axe.mp4',   prompt:'Now touch the axe!' }
+];
+const vid = $('#vid'), vidOverlay = $('#vidOverlay'), vidCap = $('#vidCap');
+const watchBtn = $('#watchBtn');
+let idx = 0, mode = 'guided', busy = false, videoOpen = false, started = false;
+let flowSeq = 0, closeWaiter = null;
+const done = new Set();
+
+function hotEl(id){ return document.querySelector('.hot[data-id="' + id + '"]'); }
+function setTarget(id){
+  document.querySelectorAll('.hot').forEach(h => h.classList.toggle('target', h.dataset.id === id));
+}
+function lightStars(n){
+  document.querySelectorAll('#starBar .st').forEach((el, i) => el.classList.toggle('on', i < n));
+}
+async function gatedSay(text){ bubble.textContent = text; await Voice.say(text); }
+
+function playVideo(step){
+  return new Promise(res => {
+    videoOpen = true; closeWaiter = res;
+    Music.ensure(); Music.duck(true); Music.sfx('pop');
+    vidCap.textContent = step.word + ' ' + step.emoji;
+    bubble.textContent = step.word + '! ' + step.emoji;
+    vid.src = step.video;
+    vidOverlay.hidden = false;
+    const p = vid.play(); if (p && p.catch) p.catch(() => {});
+    if (step.openLine) Voice.say(step.openLine); // TTS sings over the A jingle
+  });
+}
+function closeVideo(){
+  if (!videoOpen) return;
+  videoOpen = false;
+  try { vid.pause(); } catch(e){}
+  vid.removeAttribute('src');
+  try { vid.load(); } catch(e){}
+  vidOverlay.hidden = true;
+  Music.duck(Voice.busy || Voice.queue.length > 0);
+  const r = closeWaiter; closeWaiter = null;
+  if (r) r();
+}
+vid.addEventListener('ended', closeVideo);
+$('#vidClose').addEventListener('click', closeVideo);
+
+async function finishFlow(my){
+  mode = 'free';
+  setTarget(null);
+  Music.sfx('fanfare');
+  setTimeout(() => Music.sfx('star'), 200);
+  Confetti.burst(130);
+  watchBtn.style.display = 'inline-flex';
+  await gatedSay('You did it! A, ant, apple, axe!');
+  if (my !== flowSeq) return;
+  bubble.textContent = 'You did it! ⭐ Tap any picture to watch again!';
+  busy = false;
+}
+
+async function onHot(id){
+  const step = STEPS.find(s => s.id === id);
+  if (!step || videoOpen || busy) return;
+  if (mode === 'free'){
+    busy = true;
+    Voice.stop();
+    await playVideo(step);
+    bubble.textContent = 'Tap any picture to watch again! ↻';
+    busy = false;
+    return;
+  }
+  if (id !== STEPS[idx].id){
+    // Kind correction: name what was tapped, repeat the target. No fail, no score loss.
+    busy = true;
+    Music.sfx('try');
+    const tgt = STEPS[idx];
+    await gatedSay("That's " + step.that + "! Touch " + tgt.touch + "!");
+    busy = false;
+    return;
+  }
+  // Correct picture!
+  const my = ++flowSeq;
+  Voice.stop();
+  busy = true;
+  Music.sfx('good'); Voice.cheer();
+  sparkles(hotEl(id), 10);
+  done.add(id); hotEl(id).classList.add('done'); lightStars(done.size);
+  await playVideo(step);
+  if (my !== flowSeq){ busy = false; return; }
+  idx++;
+  if (idx >= STEPS.length){ await finishFlow(my); return; }
+  setTarget(STEPS[idx].id);
+  await gatedSay(pick(PRAISE));
+  if (my !== flowSeq){ busy = false; return; }
+  await gatedSay(STEPS[idx].prompt);
+  if (my !== flowSeq){ busy = false; return; }
+  busy = false;
+}
+document.querySelectorAll('.hot').forEach(h =>
+  h.addEventListener('click', () => onHot(h.dataset.id)));
+
+watchBtn.addEventListener('click', () => {
+  flowSeq++; Voice.stop();
+  done.clear(); idx = 0; mode = 'guided'; busy = false;
+  document.querySelectorAll('.hot').forEach(h => h.classList.remove('done'));
+  lightStars(0);
+  watchBtn.style.display = 'none';
+  setTarget('a');
+  gatedSay(STEPS[0].prompt);
+});
+
+/* toggles — independent, same behaviour as the main games */
+const tglV = $('#tglVoice'), tglM = $('#tglMusic');
+function paintToggles(){
+  tglV.classList.toggle('off', !Voice.enabled);
+  tglV.querySelector('.ico').textContent = Voice.enabled ? '🔊' : '🔇';
+  tglM.classList.toggle('off', !Music.on);
+  tglM.querySelector('.ico').textContent = Music.on ? '🎵' : '🔇';
+}
+tglV.addEventListener('click', () => { Voice.setEnabled(!Voice.enabled); paintToggles(); });
+tglM.addEventListener('click', () => { Music.ensure(); Music.setOn(!Music.on); paintToggles(); });
+paintToggles();
+
+/* first touch starts the music + the spoken intro (ring is already on A) */
+function startIntro(){
+  if (started) return; started = true;
+  Music.ensure();
+  gatedSay(STEPS[0].prompt);
+}
+window.addEventListener('pointerdown', () => { Music.ensure(); startIntro(); });
+setTarget('a');
+
+/* test hooks (used by build/verify-video.py) */
+window.FLOW = {
+  state(){
+    return {
+      idx, mode, busy, videoOpen, started,
+      target: mode === 'guided' ? STEPS[Math.min(idx, STEPS.length - 1)].id : null,
+      done: [...done],
+      vidAttr: vid.getAttribute('src'), vidCur: vid.currentSrc || '',
+      bubble: bubble.textContent,
+      voiceBusy: Voice.busy, voiceQueued: Voice.queue.length
+    };
+  }
+};
+</script>
+</body>
+</html>
