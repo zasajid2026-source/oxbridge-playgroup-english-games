@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>🐜 The 3D Ant Garden — Oxbridge Playgroup Games</title>
+<title>🔤 Letter A — 3D Garden · Oxbridge Playgroup Games</title>
 <style>
   :root{
     --emerald:#0B5D43; --emerald-deep:#07382A; --gold:#C9A227; --gold-soft:#E9CE7A;
@@ -20,7 +20,7 @@
   /* ---------- top chrome ---------- */
   .topbar{
     position:fixed;top:0;left:0;right:0;z-index:10;
-    display:flex;align-items:center;gap:10px;
+    display:flex;align-items:center;gap:8px;
     padding:10px 12px calc(10px + env(safe-area-inset-top,0px));
     pointer-events:none;
   }
@@ -28,51 +28,75 @@
   .backbtn{
     display:inline-flex;align-items:center;gap:6px;text-decoration:none;
     background:var(--emerald-deep);color:#fff;font-weight:800;font-size:15px;
-    border:3px solid var(--gold);border-radius:999px;padding:9px 16px;
+    border:3px solid var(--gold);border-radius:999px;padding:9px 14px;
     box-shadow:0 4px 12px rgba(7,56,42,.35);cursor:pointer;font-family:inherit;
+    white-space:nowrap;
   }
   .backbtn:active{transform:scale(.96);}
   .titlechip{
-    margin:0 auto;background:rgba(251,247,236,.92);color:var(--emerald-deep);
-    font-weight:800;font-size:clamp(15px,4.2vw,20px);
-    border:3px solid var(--gold);border-radius:999px;padding:7px 18px;
+    margin:0 auto;background:rgba(251,247,236,.94);color:var(--emerald-deep);
+    font-weight:800;font-size:clamp(14px,4vw,20px);
+    border:3px solid var(--gold);border-radius:999px;padding:7px 16px;
     box-shadow:0 4px 12px rgba(11,93,67,.18);white-space:nowrap;
   }
-  .spkbtn{
+  .roundbtn{
     width:48px;height:48px;flex:0 0 48px;border-radius:50%;font-size:22px;line-height:1;
     border:3px solid var(--gold);background:var(--emerald);color:#fff;cursor:pointer;
     box-shadow:0 4px 12px rgba(7,56,42,.3);font-family:inherit;
   }
-  .spkbtn.off{opacity:.55;background:#7d8a81;}
-  .spkbtn:active{transform:scale(.94);}
-  /* ---------- start overlay ---------- */
-  #startWrap{
+  .roundbtn.off{opacity:.55;background:#7d8a81;}
+  .roundbtn:active{transform:scale(.94);}
+  /* ---------- bottom control bar ---------- */
+  #ctrlBar{
     position:fixed;left:0;right:0;bottom:0;z-index:10;
     display:flex;flex-direction:column;align-items:center;gap:8px;
-    padding:16px 16px calc(20px + env(safe-area-inset-bottom,0px));
-    pointer-events:none;transition:opacity .5s ease;
+    padding:10px 12px calc(12px + env(safe-area-inset-bottom,0px));
+    pointer-events:none;
   }
-  #startWrap.gone{opacity:0;visibility:hidden;}
-  #btnStart{
-    pointer-events:auto;font-family:inherit;font-size:clamp(20px,5.6vw,26px);font-weight:800;
-    color:#fff;background:var(--emerald);border:4px solid var(--gold);border-radius:999px;
-    padding:16px 34px;cursor:pointer;box-shadow:0 8px 22px rgba(7,56,42,.4);
-    animation:pulse 1.6s ease-in-out infinite;
+  #ctrlBar > *{pointer-events:auto;}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .bigbtn{
+    font-family:inherit;font-weight:800;font-size:clamp(14px,4vw,17px);color:#fff;
+    background:var(--emerald);border:3px solid var(--gold);border-radius:999px;
+    padding:11px 20px;cursor:pointer;box-shadow:0 6px 16px rgba(7,56,42,.35);
   }
-  #btnStart:active{transform:scale(.96);}
-  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+  .bigbtn:active{transform:scale(.95);}
+  .bigbtn.on{background:var(--gold);color:var(--emerald-deep);border-color:#fff;}
   .hint{
-    pointer-events:none;background:rgba(7,56,42,.72);color:#FFF6D8;font-weight:700;
-    font-size:clamp(12.5px,3.6vw,15px);border-radius:999px;padding:6px 14px;text-align:center;
-  }
-  #hintBar{
-    position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));
-    z-index:9;background:rgba(7,56,42,.72);color:#FFF6D8;font-weight:700;
+    background:rgba(7,56,42,.74);color:#FFF6D8;font-weight:700;
     font-size:clamp(12.5px,3.6vw,15px);border-radius:999px;padding:6px 14px;
-    opacity:0;transition:opacity .5s ease;pointer-events:none;white-space:nowrap;
+    text-align:center;pointer-events:none;
   }
-  #hintBar.show{opacity:1;}
-  /* ---------- fallback / loading notes ---------- */
+  /* ---------- toast ---------- */
+  #toast{
+    position:fixed;left:50%;top:calc(74px + env(safe-area-inset-top,0px));
+    transform:translateX(-50%) translateY(-8px);z-index:15;max-width:min(92vw,430px);
+    background:var(--ivory);color:var(--emerald-deep);font-weight:800;
+    font-size:clamp(14px,4vw,16.5px);line-height:1.4;text-align:center;
+    border:3px solid var(--gold);border-radius:20px;padding:12px 18px;
+    box-shadow:0 10px 26px rgba(11,93,67,.28);
+    opacity:0;visibility:hidden;transition:opacity .35s ease,transform .35s ease,visibility .35s;
+  }
+  #toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);}
+  /* ---------- loading overlay ---------- */
+  #loading{
+    position:fixed;inset:0;z-index:18;display:flex;align-items:center;justify-content:center;
+    padding:24px;background:linear-gradient(180deg,#BDE6F5 0%,#EAF4EC 60%,#F6ECD2 100%);
+    text-align:center;transition:opacity .6s ease;
+  }
+  #loading.gone{opacity:0;visibility:hidden;}
+  #loading .card{
+    max-width:420px;width:100%;background:#fff;border:3px solid var(--gold);border-radius:24px;
+    padding:26px 22px;box-shadow:0 10px 30px rgba(11,93,67,.18);
+  }
+  #loading .big{font-size:46px;animation:bob 1.2s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  #loading h2{margin:8px 0 4px;color:var(--emerald-deep);font-size:21px;}
+  #loading p{margin:0 0 16px;font-weight:600;color:#47604f;font-size:15px;}
+  .barwrap{height:20px;border-radius:999px;background:#EFE6CB;border:2px solid var(--gold);overflow:hidden;}
+  #bar{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--emerald),#2E9E6B);transition:width .3s ease;}
+  #pct{margin-top:8px;font-weight:800;color:var(--emerald);font-size:15px;}
+  /* ---------- fallback notes ---------- */
   .note{
     position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;
     padding:24px;background:rgba(251,247,236,.96);text-align:center;
@@ -92,15 +116,29 @@
 
 <div class="topbar">
   <a class="backbtn" href="index.html">← Back to Games</a>
-  <div class="titlechip">🐜 The 3D Ant Garden</div>
-  <button class="spkbtn" id="tglVoice" title="Voice on/off" aria-label="Voice on/off">🔊</button>
+  <div class="titlechip">🔤 Letter A — 3D Garden</div>
+  <button class="roundbtn" id="tglMusic" title="Music on/off" aria-label="Music on/off">🎵</button>
 </div>
 
-<div id="startWrap">
-  <button id="btnStart">▶ Tap to watch the ant!</button>
-  <div class="hint">Drag to look around the garden 👀 &nbsp;•&nbsp; Pinch to zoom 🔍</div>
+<div id="toast" role="status"></div>
+
+<div id="ctrlBar">
+  <div class="hint" id="hintBar">Tap the ant 🐜, the apple 🍎 and the axe 🪓 — they sing for you!</div>
+  <div class="btnrow">
+    <button class="bigbtn" id="btnGyro">📱 Move Phone</button>
+    <button class="bigbtn" id="btnAR">📷 Magic Camera</button>
+  </div>
 </div>
-<div id="hintBar">Drag to look around 👀 &nbsp;•&nbsp; Tap the ant! 🐜</div>
+
+<div id="loading">
+  <div class="card">
+    <div class="big">🌱</div>
+    <h2>Growing the 3D garden…</h2>
+    <p>The ant, the apple and the big letter A are on their way!</p>
+    <div class="barwrap"><div id="bar"></div></div>
+    <div id="pct">0%</div>
+  </div>
+</div>
 
 <div class="note" id="nogl">
   <div class="card">
@@ -114,17 +152,17 @@
 <div class="note" id="loadnote">
   <div class="card">
     <div class="big">🌱</div>
-    <h2>The garden is still growing…</h2>
-    <p>The 3D tools could not be loaded. Please check your internet connection and open this page again.</p>
+    <h2>The garden could not grow</h2>
+    <p>The 3D garden could not be loaded. Please check your internet connection and open this page again.</p>
     <a class="backbtn" href="index.html">← Back to Games</a>
   </div>
 </div>
 
 <script>
   // If the module (CDN import) does not boot in time, show a friendly note.
-  window.__ant3dWatchdog = setTimeout(function(){
-    if (!window.__ant3dBooted) document.getElementById('loadnote').style.display = 'flex';
-  }, 12000);
+  window.__page3dWatchdog = setTimeout(function(){
+    if (!window.__page3dBooted) document.getElementById('loadnote').style.display = 'flex';
+  }, 15000);
 </script>
 <script type="importmap">
 {
