@@ -246,6 +246,13 @@ main{max-width:960px;margin:0 auto;padding:14px 14px 30px}
   left:0;bottom:24px;margin-left:0;width:min(148px,40vw);will-change:transform;
 }
 .antsvg{width:100%;height:auto;display:block;overflow:visible}
+/* living characters — drawn animals perform on stage while their
+   book picture stays still as the tap card (owner's rule). JS drives
+   them with translate3d, like the ant. */
+.actor.liveactor{left:0;margin-left:0;will-change:transform}
+.livesvg{width:100%;height:auto;display:block;overflow:visible}
+.waterband{position:absolute;left:3%;right:3%;top:35%;bottom:7%;z-index:1;border-radius:20px;
+  background:linear-gradient(rgba(140,205,245,.40),rgba(70,150,215,.55));border:3px solid rgba(255,255,255,.55)}
 .perflabel{
   position:absolute;left:0;right:0;bottom:5px;z-index:4;text-align:center;
   font-size:19px;font-weight:800;color:var(--emerald-deep);
@@ -719,10 +726,13 @@ async function steamObserve(cell){
    crops are never altered — every motion is transforms on the crop —
    except the growth sequences, which are flat explanatory diagrams in
    the book's colour family and end with the book's own fruit picture.
-   And one owner's correction on top: the ANT is not its picture moved
-   at all — the book ant stays still as the tap card while a DRAWN
-   living ant (perfAnt, data flag `live`) walks on stage like a real
-   ant: tripod gait, stop-start scurries, antennae exploring.
+   And one owner's correction on top: animal heroes are not their
+   pictures moved at all — the book picture stays still as the tap
+   card while a DRAWN living animal (data flag `live` = species)
+   performs its own natural movement on stage: the ant's tripod
+   gait and stop-start scurries (perfAnt), walking quadrupeds, the
+   striding ostrich, flapping birds, the swimming fish and duck,
+   the hopping hen (LIVE_PERF dispatch).
    Performances run UNDER the host's spoken line (same slow voice and
    speech gates); after a performance the hero can be tapped again to
    replay it ("Watch again"). Mapping for all 45 observe cells lives in
@@ -1100,6 +1110,558 @@ function perfAnt(slot){
     raf = requestAnimationFrame(frame);
   });
 }
+/* ============ LIVING CHARACTERS — every STEAM animal ============
+   The owner's ant rule, extended to all animal heroes (2026-11-04):
+   "Don't move picture of ant" — the book picture stays STATIC as the
+   tap card while a DRAWN living animal performs its own natural
+   movement on stage. One parametric framework per body plan:
+   quadrupeds walk with a diagonal gait (cat, dog, goat, horse, lion,
+   zebra, panda, lizard), the ostrich strides on long jointed legs,
+   birds flap across the sky (owl, parrot, quail), the fish swims
+   with a waving tail, the duck paddles on the water, the hen hops
+   and pecks. Each species is a small art config — colours plus the
+   details that make it recognisable (zebra stripes, lion mane,
+   panda patches, goat horns, parrot tail...). Non-animal heroes
+   keep their picture/diagram performances, untouched.           */
+function liveUnit(slot, svg, wCss, bottomCss){
+  slot.innerHTML = `<div class="actor liveactor">${svg}</div>`;
+  const unit = slot.firstElementChild;
+  unit.style.width = wCss;
+  if (bottomCss) unit.style.bottom = bottomCss;
+  return unit;
+}
+function liveParts(svg){
+  const q = s => svg.querySelector(s);
+  const piv = el => el && el.dataset.piv ? el.dataset.piv.split(' ').map(Number) : null;
+  return {
+    flip: q('.xflip'), pitch: q('.pitchg'),
+    tail: q('.tailg'), tailPiv: piv(q('.tailg')),
+    head: q('.headg'), headPiv: piv(q('.headg')),
+    wing: q('.wingg'), wingPiv: piv(q('.wingg')),
+    legs: [...svg.querySelectorAll('.lg')].map(el => ({
+      el, hip: el.dataset.hip.split(' ').map(Number),
+      ph: parseFloat(el.dataset.ph || 0),
+      bend: el.querySelector('.lgb'),
+      knee: el.dataset.knee ? el.dataset.knee.split(' ').map(Number) : null }))
+  };
+}
+const easeIO = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+/* ground-travel timeline shared by the walkers: burst, look around,
+   burst, turn, walk back — the rhythm of the living ant. */
+function groundTL(){
+  const TL = [
+    { t: 'go', to: .34, dur: 1350 }, { t: 'pause', dur: 1000 },
+    { t: 'go', to: .68, dur: 1450 }, { t: 'pause', dur: 800 },
+    { t: 'turn', dur: 300 },         { t: 'go', to: .30, dur: 1550 },
+    { t: 'pause', dur: 700 },        { t: 'turn', dur: 300 },
+    { t: 'go', to: .52, dur: 900 }];
+  let total = 0, cur = .05;
+  for (const s of TL){ s.start = total; total += s.dur; if (s.t === 'go'){ s.from = cur; cur = s.to; } s.x = cur; }
+  return { TL, total };
+}
+/* rAF walker for ground animals (quadruped / lizard / ostrich):
+   gait phase is locked to distance travelled, so legs are still
+   whenever the animal is still; pauses bring head dips and tail
+   sway; turns step-flip like the ant. cfg: step (px per half gait
+   cycle), swing (leg swing deg), bend (two-segment leg fold deg),
+   tailIdle / tailGait / tailLag, wag (tail idle speed), headDip. */
+function perfWalk(slot, svgHTML, cfg){
+  cfg = cfg || {};
+  return new Promise(resolve => {
+    const unit = liveUnit(slot, svgHTML, cfg.w || 'min(182px,47vw)', cfg.bottom || '24px');
+    const svg = unit.querySelector('svg');
+    const P = liveParts(svg);
+    const cx = parseFloat(svg.dataset.cx || 110);
+    const pcx = parseFloat(svg.dataset.px || 110), pcy = parseFloat(svg.dataset.py || 84);
+    const { TL, total } = groundTL();
+    let raf = 0, t0 = null, lastT = 0, lastX = null;
+    let phase = 0, sf = 0, flip = 1, dustAt = 0;
+    const frame = now => {
+      if (!slot.contains(unit)){ cancelAnimationFrame(raf); resolve(); return; }
+      if (t0 === null){ t0 = now; lastT = now; }
+      const el = now - t0, dt = Math.min(50, now - lastT); lastT = now;
+      const maxX = Math.max(60, slot.clientWidth - unit.clientWidth - 6);
+      if (el >= total){ unit.style.transform = `translate3d(${(TL[TL.length - 1].x * maxX).toFixed(1)}px,0,0)`; resolve(); return; }
+      const seg = TL.find(s => el >= s.start && el < s.start + s.dur);
+      const p = (el - seg.start) / seg.dur;
+      let xF = seg.x, targetSf = 0;
+      if (seg.t === 'go'){
+        xF = seg.from + (seg.to - seg.from) * easeIO(p);
+        const avgV = Math.abs(seg.to - seg.from) * maxX / seg.dur;
+        targetSf = .85;
+        if (lastX !== null && dt > 0 && avgV > 0)
+          targetSf = Math.min(1, (Math.abs(xF * maxX - lastX) / dt) / (avgV * 1.5));
+      } else if (seg.t === 'turn'){
+        flip = (seg.fF ?? (seg.fF = flip)) + ((seg.tF ?? (seg.tF = -flip)) - seg.fF) * easeIO(p);
+        phase += dt * .004; targetSf = .4;
+      }
+      const x = xF * maxX;
+      if (lastX !== null) phase += Math.abs(x - lastX) / (cfg.step || 24) * Math.PI;
+      lastX = x;
+      sf += (targetSf - sf) * .18;
+      for (const L of P.legs){
+        const ph = phase + L.ph;
+        L.el.setAttribute('transform', `rotate(${(Math.sin(ph) * (cfg.swing || 19) * sf).toFixed(2)} ${L.hip[0]} ${L.hip[1]})`);
+        if (L.bend && L.knee){
+          const bd = Math.max(0, Math.sin(ph - 1.0)) * (cfg.bend || 0) * sf;
+          L.bend.setAttribute('transform', `rotate(${(-bd).toFixed(2)} ${L.knee[0]} ${L.knee[1]})`);
+        }
+      }
+      if (P.tail && P.tailPiv){
+        const sway = Math.sin(el * .0016 * (cfg.wag || 1)) * (cfg.tailIdle ?? 5)
+          + Math.sin(phase - (cfg.tailLag ?? .4)) * (cfg.tailGait ?? 7) * sf;
+        P.tail.setAttribute('transform', `rotate(${sway.toFixed(2)} ${P.tailPiv[0]} ${P.tailPiv[1]})`);
+      }
+      if (P.head && P.headPiv){
+        let hd = Math.sin(phase * 2) * 1.7 * sf + Math.sin(el * .0011) * 1.2;
+        if (seg.t === 'pause') hd += Math.sin(p * Math.PI) * (cfg.headDip ?? 5);
+        P.head.setAttribute('transform', `rotate(${hd.toFixed(2)} ${P.headPiv[0]} ${P.headPiv[1]})`);
+      }
+      if (P.wing && P.wingPiv){
+        const wr = seg.t === 'turn' ? Math.sin(el * .055) * 13 : Math.sin(phase) * 2.5 * sf;
+        P.wing.setAttribute('transform', `rotate(${wr.toFixed(2)} ${P.wingPiv[0]} ${P.wingPiv[1]})`);
+      }
+      if (P.pitch){
+        const bobY = -Math.abs(Math.sin(phase)) * 1.7 * sf;
+        P.pitch.setAttribute('transform', `rotate(${(-1.3 * sf).toFixed(2)} ${pcx} ${pcy}) translate(0 ${bobY.toFixed(2)})`);
+      }
+      if (P.flip) P.flip.setAttribute('transform', `translate(${cx} 0) scale(${flip.toFixed(3)} 1) translate(${-cx} 0)`);
+      unit.style.transform = `translate3d(${x.toFixed(1)}px,${seg.t === 'go' ? (Math.sin(p * Math.PI) * -2).toFixed(1) : 0}px,0)`;
+      if (sf > .55 && el - dustAt > 300){
+        dustAt = el;
+        const c = relC(unit, slot);
+        const d = fxSpawn(slot, 'dust', { left: (c.cx - flip * c.w * .32 - 8) + 'px', top: (c.bottom - 14) + 'px' });
+        A(d, [{ transform: 'scale(.4)', opacity: .5 }, { transform: 'scale(1.3) translateY(-8px)', opacity: 0 }], { duration: 650 }).then(() => d.remove());
+      }
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+  });
+}
+/* ---- quadruped builder: one body plan, species art configs ---- */
+function quadSVG(o){
+  const g = Object.assign({ bx: 108, by: 76, brx: 54, bry: 30,
+    legs: [[140, 92, Math.PI, 1], [78, 92, 0, 1], [152, 95, 0, 0], [88, 95, Math.PI, 0]],
+    l1: 15, l2: 29, fdx: 1, shadowY: 127, shadowRx: 60 }, o.geo || {});
+  const legW = o.legW || 7;
+  const leg = ([x, y, ph, far]) => `<g class="lg" data-hip="${x} ${y}" data-ph="${ph}"><path d="M${x} ${y} L${x + 4} ${y + g.l1} L${x + g.fdx} ${y + g.l2}" stroke="${far ? o.far : o.near}" stroke-width="${far ? legW - 1 : legW}" stroke-linecap="round" fill="none"/></g>`;
+  return `<svg class="livesvg" data-cx="110"${o.px ? ` data-px="${o.px}" data-py="${o.py}"` : ''} viewBox="0 0 220 140" role="img" aria-label="${o.label}">
+    <ellipse cx="110" cy="${g.shadowY}" rx="${g.shadowRx}" ry="5.5" fill="rgba(80,55,20,.28)"/>
+    <g class="xflip"><g class="pitchg">
+      ${g.legs.filter(l => l[3]).map(leg).join('')}
+      ${o.tail ? `<g class="tailg" data-piv="${o.tailPiv || '56 60'}">${o.tail}</g>` : ''}
+      <clipPath id="${o.id}Clip"><ellipse cx="${g.bx}" cy="${g.by}" rx="${g.brx}" ry="${g.bry}"/></clipPath>
+      <ellipse cx="${g.bx}" cy="${g.by}" rx="${g.brx}" ry="${g.bry}" fill="${o.body}"/>
+      ${o.belly ? `<ellipse cx="${g.bx}" cy="${g.by + g.bry * .4}" rx="${g.brx * .78}" ry="${g.bry * .62}" fill="${o.belly}" opacity=".55"/>` : ''}
+      ${o.pattern ? `<g clip-path="url(#${o.id}Clip)">${o.pattern}</g>` : ''}
+      <g class="headg" data-piv="${o.headPiv || '152 62'}">${o.head}</g>
+      ${g.legs.filter(l => !l[3]).map(leg).join('')}
+    </g></g>
+  </svg>`;
+}
+const lionMane = (() => {
+  let s = '<circle cx="173" cy="53" r="25" fill="#A85B14"/>';
+  for (let i = 0; i < 10; i++){
+    const a = i / 10 * Math.PI * 2;
+    s += `<circle cx="${(173 + Math.cos(a) * 23).toFixed(1)}" cy="${(53 + Math.sin(a) * 23).toFixed(1)}" r="7.5" fill="#A85B14"/>`;
+  }
+  return s;
+})();
+const QUAD_ART = {
+  cat: { id: 'cat', label: 'A cat walking', body: '#F59A3D', far: '#D97E22', near: '#E8892A', belly: '#FFDFAF',
+    tailPiv: '56 62',
+    tail: '<path d="M56,62 C42,60 32,48 34,28" stroke="#E8892A" stroke-width="7.5" fill="none" stroke-linecap="round"/>',
+    pattern: '<path d="M84,48 q5,12 1,24 M104,45 q5,13 1,26 M124,47 q5,12 1,24" stroke="#D97E22" stroke-width="4.4" fill="none" opacity=".55"/>',
+    head: '<path d="M161,43 L158,25 L173,35 Z" fill="#F59A3D"/><path d="M185,42 L189,25 L197,39 Z" fill="#F59A3D"/><path d="M163,39 L162,30 L169,35 Z" fill="#F6A8B8"/><path d="M187,38 L190,30 L194,37 Z" fill="#F6A8B8"/><circle cx="174" cy="54" r="17" fill="#F59A3D"/><path d="M166,40 q2,5 1,9 M174,38 q2,6 1,10 M182,40 q2,5 1,9" stroke="#D97E22" stroke-width="2.6" fill="none"/><ellipse cx="183" cy="61" rx="8.5" ry="6" fill="#FFDFAF"/><path d="M185,56 l6,0 l-3,4 z" fill="#E5637E"/><circle cx="175" cy="50" r="2.7" fill="#26221E"/><circle cx="176" cy="49" r="1" fill="#fff"/><path d="M188,58 L203,54 M188,61 L204,61 M188,64 L202,67" stroke="#FFF6E6" stroke-width="1.7" stroke-linecap="round"/>' },
+  dog: { id: 'dog', label: 'A dog walking', body: '#C68B4E', far: '#A06A34', near: '#B57A3E', belly: '#EBD3AC',
+    tailPiv: '56 62',
+    tail: '<path d="M56,62 C44,62 34,56 34,44" stroke="#B57A3E" stroke-width="7" fill="none" stroke-linecap="round"/>',
+    pattern: '<circle cx="90" cy="64" r="13" fill="#A06A34" opacity=".75"/><circle cx="126" cy="88" r="8" fill="#A06A34" opacity=".6"/>',
+    head: '<ellipse cx="160" cy="52" rx="7.5" ry="15" fill="#A06A34" transform="rotate(16 160 52)"/><circle cx="173" cy="55" r="16" fill="#C68B4E"/><rect x="180" y="56" width="21" height="13" rx="6.5" fill="#EBD3AC"/><path d="M192,69 q2,7 8,6 q-1,-5 -4,-7 z" fill="#E5637E"/><circle cx="199" cy="60" r="4.2" fill="#3A2A1C"/><circle cx="175" cy="50" r="2.7" fill="#26221E"/><circle cx="176" cy="49" r="1" fill="#fff"/>' },
+  goat: { id: 'goat', label: 'A goat walking', body: '#E7DFD2', far: '#B4A98F', near: '#C4BBA6', belly: '#F5F0E4', legW: 6.5,
+    tailPiv: '56 60',
+    tail: '<path d="M56,60 q-9,-3 -8,-15" stroke="#C4BBA6" stroke-width="6" fill="none" stroke-linecap="round"/>',
+    head: '<path d="M165,41 q-11,-11 -4,-21 M179,39 q-3,-13 6,-19" stroke="#9A8B76" stroke-width="4.6" fill="none" stroke-linecap="round"/><ellipse cx="158" cy="50" rx="8.5" ry="4" fill="#C4BBA6" transform="rotate(-22 158 50)"/><ellipse cx="189" cy="48" rx="8" ry="4" fill="#C4BBA6" transform="rotate(20 189 48)"/><ellipse cx="174" cy="55" rx="15" ry="13" fill="#F2EBDD"/><ellipse cx="184" cy="62" rx="7.5" ry="5.5" fill="#DAD0BE"/><path d="M179,68 l4.5,10 l4.5,-10 z" fill="#B4A98F"/><circle cx="180" cy="60" r="1.5" fill="#8A7B64"/><circle cx="187" cy="60" r="1.5" fill="#8A7B64"/><circle cx="169" cy="50" r="2.6" fill="#26221E"/><circle cx="170" cy="49" r="1" fill="#fff"/>' },
+  horse: { id: 'horse', label: 'A horse walking', body: '#A9743F', far: '#7E5527', near: '#8F6232', legW: 6, belly: '#8F6232',
+    headPiv: '148 66', tailPiv: '56 58',
+    tail: '<path d="M56,58 C40,64 33,86 39,108" stroke="#5D3A1A" stroke-width="8.5" fill="none" stroke-linecap="round"/>',
+    head: '<path d="M138,92 C148,64 156,48 166,34 L186,42 C178,58 172,74 172,92 Z" fill="#A9743F"/><path d="M162,30 C152,44 145,64 141,90 L135,88 C139,60 147,38 155,25 Z" fill="#5D3A1A"/><ellipse cx="186" cy="42" rx="18" ry="10" fill="#A9743F" transform="rotate(30 186 42)"/><ellipse cx="200" cy="52" rx="9.5" ry="7" fill="#8F6232" transform="rotate(30 200 52)"/><path d="M169,31 L170,16 L180,26 Z" fill="#A9743F"/><circle cx="197" cy="50" r="1.7" fill="#5D3A1A"/><circle cx="182" cy="36" r="2.7" fill="#26221E"/><circle cx="183" cy="35" r="1" fill="#fff"/>' },
+  lion: { id: 'lion', label: 'A lion walking', body: '#D98E32', far: '#B96F1F', near: '#C67F27', belly: '#F7DCA8',
+    tailPiv: '56 60',
+    tail: '<path d="M56,60 C42,62 34,74 38,90" stroke="#C67F27" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="39" cy="95" r="6.5" fill="#A85B14"/>',
+    head: lionMane + '<circle cx="156" cy="36" r="5.5" fill="#D98E32"/><circle cx="190" cy="36" r="5.5" fill="#D98E32"/><circle cx="174" cy="54" r="15.5" fill="#F0B95E"/><ellipse cx="182" cy="61" rx="8" ry="6" fill="#F7DCA8"/><path d="M183,55 l6,0 l-3,4.5 z" fill="#8A4B12"/><circle cx="171" cy="50" r="2.6" fill="#26221E"/><circle cx="172" cy="49" r="1" fill="#fff"/>' },
+  zebra: { id: 'zebra', label: 'A zebra walking', body: '#F4F1EA', far: '#C9C3B4', near: '#D8D2C2',
+    tailPiv: '56 60',
+    tail: '<path d="M56,60 C44,64 38,76 42,88" stroke="#D8D2C2" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="43" cy="93" rx="4.5" ry="7.5" fill="#26221E"/>',
+    pattern: '<path d="M78,47 q6,29 0,58 M98,44 q6,32 0,64 M118,45 q6,30 0,60 M136,50 q5,24 1,48" stroke="#2B2B2B" stroke-width="6" fill="none"/>',
+    head: '<path d="M158,40 L163,24 L172,32 L179,22 L185,33 L193,26 L194,40 Z" fill="#26221E"/><path d="M159,42 L157,26 L170,34 Z" fill="#F4F1EA"/><path d="M183,41 L187,26 L195,38 Z" fill="#F4F1EA"/><ellipse cx="170" cy="55" rx="16.5" ry="12.5" fill="#F4F1EA"/><ellipse cx="181" cy="61" rx="9.5" ry="7" fill="#6E675C"/><circle cx="178" cy="59" r="1.6" fill="#3A352D"/><circle cx="185" cy="59" r="1.6" fill="#3A352D"/><circle cx="165" cy="50" r="2.7" fill="#26221E"/><circle cx="166" cy="49" r="1" fill="#fff"/>' },
+  panda: { id: 'panda', label: 'A panda walking', body: '#FBFAF6', far: '#2A2723', near: '#3B372F', legW: 7.5,
+    tailPiv: '54 62',
+    tail: '<circle cx="52" cy="64" r="7" fill="#FBFAF6" stroke="#D8D2C2" stroke-width="2"/>',
+    pattern: '<path d="M140,47 q11,29 0,58" stroke="#3B372F" stroke-width="13" fill="none" opacity=".92"/>',
+    head: '<circle cx="158" cy="39" r="7.5" fill="#2A2723"/><circle cx="189" cy="40" r="7.5" fill="#2A2723"/><circle cx="173" cy="54" r="16.5" fill="#FBFAF6"/><ellipse cx="165" cy="51" rx="5" ry="7.5" fill="#2A2723" transform="rotate(-16 165 51)"/><ellipse cx="182" cy="51" rx="5" ry="7.5" fill="#2A2723" transform="rotate(16 182 51)"/><circle cx="166" cy="50" r="2.2" fill="#fff"/><circle cx="166" cy="50" r="1.1" fill="#2A2723"/><circle cx="181" cy="50" r="2.2" fill="#fff"/><circle cx="181" cy="50" r="1.1" fill="#2A2723"/><ellipse cx="176" cy="61" rx="4" ry="3" fill="#2A2723"/>' },
+  lizard: { id: 'lizard', label: 'A lizard walking', body: '#63B04B', far: '#47863A', near: '#529A43', belly: '#A8D68F', legW: 6,
+    px: 102, py: 88, headPiv: '154 84',
+    geo: { bx: 102, by: 88, brx: 62, bry: 17, legs: [[64, 96, 0, 1], [126, 96, Math.PI, 1], [76, 99, Math.PI, 0], [138, 99, 0, 0]], l1: 9, l2: 19, fdx: 7, shadowY: 121, shadowRx: 66 },
+    tailPiv: '42 86',
+    tail: '<path d="M46,79 C28,82 12,92 2,108 C16,99 32,95 48,95 Z" fill="#529A43"/>',
+    pattern: '<circle cx="78" cy="80" r="4" fill="#F2D06B" opacity=".9"/><circle cx="102" cy="76" r="4.6" fill="#F2D06B" opacity=".9"/><circle cx="126" cy="80" r="4" fill="#F2D06B" opacity=".9"/><path d="M48,84 q54,-7 108,0" stroke="#47863A" stroke-width="3" fill="none" opacity=".7"/>',
+    head: '<ellipse cx="170" cy="85" rx="16" ry="10" fill="#63B04B"/><ellipse cx="176" cy="90" rx="10" ry="5.5" fill="#A8D68F" opacity=".8"/><circle cx="174" cy="80" r="3" fill="#26221E"/><circle cx="175" cy="79" r="1.1" fill="#fff"/><path d="M178,90 q6,2 11,-1" stroke="#3E7A32" stroke-width="2.2" fill="none" stroke-linecap="round"/>' }
+};
+const QUAD_CFG = {
+  cat: {}, dog: { wag: 2.6, tailIdle: 7 }, goat: {}, horse: { step: 27, swing: 16 },
+  lion: {}, zebra: {}, panda: { swing: 15, step: 21 },
+  lizard: { step: 19, swing: 25, tailLag: 1.35, tailGait: 11, w: 'min(192px,49vw)' }
+};
+/* ---- the ostrich: a biped with long jointed legs ---- */
+function ostrichSVG(){
+  const legO = (hipX, far) => {
+    const col = far ? '#BE9A72' : '#D9B98F', kneeX = hipX - 3, footX = hipX + 4;
+    return `<g class="lg" data-hip="${hipX} 84" data-knee="${kneeX} 110" data-ph="${far ? Math.PI : 0}">
+      <path d="M${hipX} 84 L${kneeX} 110" stroke="${col}" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+      <g class="lgb"><path d="M${kneeX} 110 L${footX} 136 M${footX} 136 L${footX - 7} 140 M${footX} 136 L${footX + 9} 139" stroke="${col}" stroke-width="5" fill="none" stroke-linecap="round"/></g></g>`;
+  };
+  return `<svg class="livesvg" data-cx="100" data-px="96" data-py="66" viewBox="0 0 200 150" role="img" aria-label="An ostrich walking">
+    <ellipse cx="100" cy="143" rx="54" ry="5" fill="rgba(80,55,20,.28)"/>
+    <g class="xflip"><g class="pitchg">
+      ${legO(90, 1)}
+      <path d="M54,42 C44,36 38,26 38,14 M60,38 C54,28 54,18 58,8 M66,40 C64,30 68,20 74,14" stroke="#E8DFCE" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="96" cy="56" rx="47" ry="31" fill="#8D7B68"/>
+      <path d="M64,44 q30,-14 62,0 M60,60 q34,-12 68,0" stroke="#6E5B47" stroke-width="2.6" fill="none" opacity=".6"/>
+      <g class="headg" data-piv="126 40">
+        <path d="M120,70 C136,60 142,44 146,24" stroke="#DCBE9E" stroke-width="9" fill="none" stroke-linecap="round"/>
+        <ellipse cx="152" cy="19" rx="11" ry="8.5" fill="#E4C9A6"/>
+        <path d="M162,15 L177,19 L162,24 Z" fill="#C89B6A"/>
+        <circle cx="154" cy="16.5" r="2.4" fill="#26221E"/><circle cx="155" cy="15.6" r=".9" fill="#fff"/>
+        <path d="M146,12 q-2,-6 2,-9 M152,11 q0,-6 4,-8" stroke="#8D7B68" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      </g>
+      <g class="wingg" data-piv="94 48"><ellipse cx="94" cy="54" rx="25" ry="15" fill="#A08B72"/><path d="M76,50 q18,8 36,0" stroke="#8D7B68" stroke-width="2.2" fill="none"/></g>
+      ${legO(110, 0)}
+    </g></g>
+  </svg>`;
+}
+/* ---- birds: flap across the top of the stage, turn, glide back ---- */
+function birdSVG(o){
+  return `<svg class="livesvg" data-cx="105" viewBox="0 0 210 130" role="img" aria-label="${o.label}">
+    <g class="xflip"><g class="pitchg">
+      <g class="wingf" data-piv="100 58">${o.wingFar}</g>
+      ${o.tail}
+      <ellipse cx="104" cy="68" rx="42" ry="23" fill="${o.body}"/>
+      ${o.belly ? `<ellipse cx="110" cy="76" rx="30" ry="14" fill="${o.belly}" opacity=".6"/>` : ''}
+      ${o.pattern || ''}
+      <g class="headg" data-piv="138 56">${o.head}</g>
+      <g class="wingn" data-piv="108 60">${o.wing}</g>
+    </g></g>
+  </svg>`;
+}
+const BIRD_ART = {
+  owl: { id: 'owl', label: 'An owl flying', body: '#8A6844', belly: '#C8A165',
+    wing: '<path d="M108,62 C86,26 54,12 20,22 C48,38 80,54 106,70 Z" fill="#75562F"/><path d="M100,60 C82,34 58,22 34,26 C56,40 80,52 100,64 Z" fill="#8A6844" opacity=".8"/>',
+    wingFar: '<path d="M100,60 C80,30 52,18 24,26 C50,40 76,52 100,66 Z" fill="#654A2A"/>',
+    tail: '<path d="M68,70 L38,82 L43,93 L72,82 Z" fill="#75562F"/>',
+    pattern: '<path d="M88,72 q6,5 12,0 M104,76 q6,5 12,0 M96,64 q6,5 12,0" stroke="#75562F" stroke-width="2.2" fill="none" opacity=".55"/>',
+    head: '<path d="M141,40 L137,24 L150,34 Z" fill="#75562F"/><path d="M162,39 L167,24 L171,37 Z" fill="#75562F"/><circle cx="152" cy="50" r="15" fill="#8A6844"/><circle cx="153" cy="50" r="11.5" fill="#EBD9AE"/><circle cx="156" cy="48" r="4.6" fill="#fff"/><circle cx="156.5" cy="48" r="2.5" fill="#26221E"/><circle cx="157.4" cy="47" r=".9" fill="#fff"/><path d="M150,55 L158,57.5 L150,60.5 Z" fill="#D9A441"/>' },
+  parrot: { id: 'parrot', label: 'A parrot flying', body: '#3FA34D', belly: '#7CC47F',
+    wing: '<path d="M108,62 C86,26 54,12 20,22 C48,38 80,54 106,70 Z" fill="#2E8B3E"/><path d="M102,60 C86,34 62,22 40,27 C60,40 82,52 102,64 Z" fill="#F2C230" opacity=".9"/>',
+    wingFar: '<path d="M100,60 C80,30 52,18 24,26 C50,40 76,52 100,66 Z" fill="#27702F"/>',
+    tail: '<path d="M66,72 L20,104 M70,76 L32,108 M62,70 L14,94" stroke="#2D9CDB" stroke-width="6.5" fill="none" stroke-linecap="round"/><path d="M68,74 L26,102" stroke="#E2483D" stroke-width="4.5" fill="none" stroke-linecap="round"/>',
+    head: '<path d="M144,38 q-4,-12 4,-17" stroke="#2E8B3E" stroke-width="3.6" fill="none" stroke-linecap="round"/><circle cx="149" cy="19" r="3.2" fill="#F2C230"/><circle cx="152" cy="50" r="14.5" fill="#3FA34D"/><circle cx="159" cy="55" r="4.4" fill="#F2C230" opacity=".85"/><path d="M164,42 q13,1 12,10 q-1,8 -11,9 q5,-7 2,-12 q-1,-4 -3,-7 Z" fill="#E2483D"/><circle cx="156" cy="46" r="3.4" fill="#fff"/><circle cx="156.5" cy="46" r="1.9" fill="#26221E"/>' },
+  quail: { id: 'quail', label: 'A quail flying', body: '#B08A5A', belly: '#D9BC8C',
+    wing: '<path d="M108,62 C88,30 58,16 28,24 C54,40 82,54 106,68 Z" fill="#8A6844"/>',
+    wingFar: '<path d="M100,60 C82,32 56,20 30,27 C54,40 78,52 100,65 Z" fill="#75562F"/>',
+    tail: '<path d="M67,69 L42,58 L46,73 L68,78 Z" fill="#8A6844"/>',
+    pattern: '<circle cx="88" cy="60" r="2.3" fill="#EBD9AE" opacity=".85"/><circle cx="103" cy="73" r="2.3" fill="#EBD9AE" opacity=".85"/><circle cx="93" cy="79" r="2.3" fill="#EBD9AE" opacity=".85"/><circle cx="117" cy="61" r="2.3" fill="#EBD9AE" opacity=".85"/>',
+    head: '<path d="M150,38 q0,-9 6,-13" stroke="#3A2E22" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="157" cy="23.5" r="3.2" fill="#3A2E22"/><circle cx="152" cy="50" r="13" fill="#B08A5A"/><path d="M144,57 q7,4 14,1" stroke="#8A6844" stroke-width="2.4" fill="none"/><path d="M163,47 L175,50.5 L163,54.5 Z" fill="#6B543A"/><circle cx="155" cy="46.5" r="2.3" fill="#26221E"/><circle cx="156" cy="45.6" r=".9" fill="#fff"/>' }
+};
+function perfBirdFly(slot, svgHTML, cfg){
+  cfg = cfg || {};
+  return new Promise(resolve => {
+    const unit = liveUnit(slot, svgHTML, cfg.w || 'min(170px,44vw)', '36%');
+    const svg = unit.querySelector('svg');
+    const P = liveParts(svg);
+    const wingN = svg.querySelector('.wingn'), wingF = svg.querySelector('.wingf');
+    const wnp = wingN.dataset.piv.split(' ').map(Number), wfp = wingF.dataset.piv.split(' ').map(Number);
+    const TL = [
+      { t: 'fly', x0: .03, x1: .55, y0: 4, y1: -96, dur: 2350 },
+      { t: 'turn', dur: 340, y: -88 },
+      { t: 'fly', x0: .55, x1: .15, y0: -88, y1: -30, dur: 2350 },
+      { t: 'land', x0: .15, x1: .30, y0: -30, y1: 2, dur: 900 }];
+    let total = 0;
+    for (const s of TL){ s.start = total; total += s.dur; }
+    let raf = 0, t0 = null, lastT = 0, flip = 1, flapPh = 0;
+    const frame = now => {
+      if (!slot.contains(unit)){ cancelAnimationFrame(raf); resolve(); return; }
+      if (t0 === null){ t0 = now; lastT = now; }
+      const el = now - t0, dt = Math.min(50, now - lastT); lastT = now;
+      const maxX = Math.max(60, slot.clientWidth - unit.clientWidth - 6);
+      if (el >= total){ resolve(); return; }
+      const seg = TL.find(s => el >= s.start && el < s.start + s.dur);
+      const p = (el - seg.start) / seg.dur;
+      let xF, y, freq, amp, pitch = 0;
+      if (seg.t === 'fly' || seg.t === 'land'){
+        const e = easeIO(p);
+        xF = seg.x0 + (seg.x1 - seg.x0) * e;
+        y = seg.y0 + (seg.y1 - seg.y0) * e;
+        const slope = (seg.y1 - seg.y0) / seg.dur;
+        pitch = Math.max(-15, Math.min(15, slope * 300));
+        if (seg.t === 'land'){ freq = 4.5 - 3.3 * p; amp = 24 - 17 * p; }
+        else if (slope < -0.01){ freq = 8.6; amp = 40; }
+        else { freq = 4.6; amp = 25; }
+      } else {
+        const pv = TL[TL.indexOf(seg) - 1];
+        xF = pv.x1; y = seg.y - Math.sin(p * Math.PI) * 6;
+        flip = (seg.fF ?? (seg.fF = flip)) + ((seg.tF ?? (seg.tF = -flip)) - seg.fF) * easeIO(p);
+        freq = 5.2; amp = 27; pitch = Math.sin(p * Math.PI) * 7;
+      }
+      flapPh += dt * .001 * freq * Math.PI * 2;
+      wingN.setAttribute('transform', `rotate(${(Math.sin(flapPh) * amp).toFixed(1)} ${wnp[0]} ${wnp[1]})`);
+      wingF.setAttribute('transform', `rotate(${(Math.sin(flapPh - .55) * amp * .85).toFixed(1)} ${wfp[0]} ${wfp[1]})`);
+      if (P.pitch) P.pitch.setAttribute('transform', `rotate(${pitch.toFixed(1)} 105 66)`);
+      if (P.flip) P.flip.setAttribute('transform', `translate(105 0) scale(${flip.toFixed(3)} 1) translate(-105 0)`);
+      unit.style.transform = `translate3d(${(xF * maxX).toFixed(1)}px,${y.toFixed(1)}px,0)`;
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+  });
+}
+/* ---- the fish: tail waves, body rolls gently, bubbles rise ---- */
+function fishSVG(){
+  return `<svg class="livesvg" data-cx="100" viewBox="0 0 200 115" role="img" aria-label="A fish swimming">
+    <defs><linearGradient id="liveFishG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8BC4A"/><stop offset="100%" stop-color="#F08A1D"/></linearGradient>
+      <clipPath id="liveFishClip"><ellipse cx="98" cy="56" rx="50" ry="29"/></clipPath></defs>
+    <g class="xflip">
+      <g class="tailg" data-piv="46 56"><path d="M48,56 L15,29 Q27,56 15,83 Z" fill="#E07B24"/><path d="M40,56 L22,40 M40,56 L22,72" stroke="#C96A15" stroke-width="2.4" fill="none"/></g>
+      <g class="bodyg">
+        <ellipse cx="98" cy="56" rx="50" ry="29" fill="url(#liveFishG)"/>
+        <g clip-path="url(#liveFishClip)"><path d="M84,26 q8,30 0,60" stroke="#E07B24" stroke-width="5" fill="none" opacity=".55"/><path d="M104,25 q8,31 0,62" stroke="#E07B24" stroke-width="5" fill="none" opacity=".4"/></g>
+        <path d="M74,29 q15,-13 30,-5 q-13,9 -30,5 Z" fill="#E07B24"/>
+        <ellipse cx="100" cy="70" rx="34" ry="15" fill="#FFE1A8" opacity=".55"/>
+        <path d="M117,33 q9,23 0,46" stroke="#D97316" stroke-width="3" fill="none"/>
+        <g class="fing" data-piv="102 68"><ellipse cx="95" cy="73" rx="11" ry="6" fill="#E07B24" transform="rotate(28 95 73)"/></g>
+        <circle cx="129" cy="48" r="5.6" fill="#fff"/><circle cx="130" cy="48" r="3" fill="#26221E"/><circle cx="131.2" cy="46.8" r="1.1" fill="#fff"/>
+        <path d="M145,63 q5,3 10,0" stroke="#B85C0E" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+      </g>
+    </g>
+  </svg>`;
+}
+function perfFishSwim(slot, svgHTML){
+  return new Promise(resolve => {
+    const unit = liveUnit(slot, svgHTML, 'min(168px,44vw)', '27%');
+    slot.insertAdjacentHTML('afterbegin', '<div class="waterband"></div>');
+    const svg = unit.querySelector('svg');
+    const tail = svg.querySelector('.tailg'), bodyG = svg.querySelector('.bodyg'), fin = svg.querySelector('.fing');
+    const TL = [
+      { t: 'go', to: .68, dur: 2900 }, { t: 'turn', dur: 300 },
+      { t: 'go', to: .16, dur: 2500 }, { t: 'turn', dur: 300 },
+      { t: 'go', to: .30, dur: 900 }];
+    let total = 0, cur = .05;
+    for (const s of TL){ s.start = total; total += s.dur; if (s.t === 'go'){ s.from = cur; cur = s.to; } s.x = cur; }
+    let raf = 0, t0 = null, lastT = 0, lastX = null, phase = 0, sf = 0, flip = 1;
+    const bub = setInterval(() => {
+      if (!slot.contains(unit)) return;
+      const c = relC(unit, slot);
+      const b = fxSpawn(slot, 'bub', { left: (c.cx + flip * c.w * .40) + 'px', top: (c.cy - 4) + 'px' });
+      A(b, [{ transform: 'translateY(0)', opacity: .9 }, { transform: 'translateY(-56px)', opacity: 0 }], { duration: 1050 }).then(() => b.remove());
+    }, 540);
+    const done = () => { clearInterval(bub); resolve(); };
+    const frame = now => {
+      if (!slot.contains(unit)){ cancelAnimationFrame(raf); done(); return; }
+      if (t0 === null){ t0 = now; lastT = now; }
+      const el = now - t0, dt = Math.min(50, now - lastT); lastT = now;
+      const maxX = Math.max(60, slot.clientWidth - unit.clientWidth - 6);
+      if (el >= total){ done(); return; }
+      const seg = TL.find(s => el >= s.start && el < s.start + s.dur);
+      const p = (el - seg.start) / seg.dur;
+      let xF = seg.x, targetSf = 0, y = 0;
+      if (seg.t === 'go'){
+        xF = seg.from + (seg.to - seg.from) * easeIO(p);
+        y = Math.sin(p * Math.PI * 2) * 9;
+        targetSf = .85;
+        if (lastX !== null && dt > 0){
+          const avgV = Math.abs(seg.to - seg.from) * maxX / seg.dur;
+          if (avgV > 0) targetSf = Math.min(1, (Math.abs(xF * maxX - lastX) / dt) / (avgV * 1.5));
+        }
+      } else if (seg.t === 'turn'){
+        flip = (seg.fF ?? (seg.fF = flip)) + ((seg.tF ?? (seg.tF = -flip)) - seg.fF) * easeIO(p);
+      }
+      const x = xF * maxX;
+      lastX = x;
+      sf += (targetSf - sf) * .12;
+      phase += dt * .001 * Math.PI * 2 * (1.0 + 1.5 * sf);
+      tail.setAttribute('transform', `rotate(${(Math.sin(phase) * 19).toFixed(1)} 46 56)`);
+      bodyG.setAttribute('transform', `rotate(${(Math.sin(phase - .8) * 3.4).toFixed(2)} 98 56)`);
+      fin.setAttribute('transform', `rotate(${(Math.sin(el * .001 * Math.PI * 2 * 3) * 13).toFixed(1)} 102 68)`);
+      svg.querySelector('.xflip').setAttribute('transform', `translate(100 0) scale(${flip.toFixed(3)} 1) translate(-100 0)`);
+      unit.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0)`;
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+  });
+}
+/* ---- the duck: paddles on the surface, wake rings behind ---- */
+function duckSVG(){
+  return `<svg class="livesvg" data-cx="105" viewBox="0 0 210 135" role="img" aria-label="A duck swimming">
+    <g class="xflip">
+      <ellipse cx="102" cy="110" rx="88" ry="11" fill="rgba(90,165,225,.45)"/>
+      <ellipse cx="102" cy="117" rx="60" ry="7" fill="rgba(90,165,225,.30)"/>
+      <g class="bodyg">
+        <g class="tailg" data-piv="58 68"><path d="M58,72 C46,68 38,58 38,46 C50,50 58,58 62,68 Z" fill="#FFF6D8"/></g>
+        <ellipse cx="100" cy="82" rx="47" ry="25" fill="#FFFDF4"/>
+        <ellipse cx="100" cy="90" rx="36" ry="15" fill="#F7EFCE" opacity=".7"/>
+        <ellipse cx="94" cy="82" rx="23" ry="12.5" fill="#F3EAD2"/>
+        <path d="M76,78 q18,9 36,0" stroke="#E3D5AE" stroke-width="2.4" fill="none"/>
+        <g class="headg" data-piv="130 62">
+          <path d="M124,66 C126,54 130,46 136,40 L148,46 C142,52 140,58 140,66 Z" fill="#FFFDF4"/>
+          <circle cx="142" cy="42" r="16" fill="#FFFDF4"/>
+          <path d="M156,36 q15,-1 18,5 q-7,6 -18,4 Z" fill="#F59A23"/>
+          <path d="M156,45 q11,1 14,4 q-6,4 -14,2 Z" fill="#E8890C"/>
+          <circle cx="146" cy="39" r="2.7" fill="#26221E"/><circle cx="147" cy="38" r="1" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </svg>`;
+}
+function perfDuckSwim(slot, svgHTML){
+  return new Promise(resolve => {
+    const unit = liveUnit(slot, svgHTML, 'min(182px,47vw)', '23%');
+    const svg = unit.querySelector('svg');
+    const bodyG = svg.querySelector('.bodyg'), head = svg.querySelector('.headg'), tail = svg.querySelector('.tailg');
+    const TL = [
+      { t: 'go', to: .58, dur: 3000 }, { t: 'pause', dur: 800 },
+      { t: 'turn', dur: 320 },         { t: 'go', to: .18, dur: 2800 },
+      { t: 'pause', dur: 600 },        { t: 'turn', dur: 320 },
+      { t: 'go', to: .36, dur: 800 }];
+    let total = 0, cur = .06;
+    for (const s of TL){ s.start = total; total += s.dur; if (s.t === 'go'){ s.from = cur; cur = s.to; } s.x = cur; }
+    let raf = 0, t0 = null, flip = 1, wakeAt = 0;
+    const frame = now => {
+      if (!slot.contains(unit)){ cancelAnimationFrame(raf); resolve(); return; }
+      if (t0 === null) t0 = now;
+      const el = now - t0;
+      const maxX = Math.max(60, slot.clientWidth - unit.clientWidth - 6);
+      if (el >= total){ resolve(); return; }
+      const seg = TL.find(s => el >= s.start && el < s.start + s.dur);
+      const p = (el - seg.start) / seg.dur;
+      let xF = seg.x;
+      if (seg.t === 'go') xF = seg.from + (seg.to - seg.from) * easeIO(p);
+      else if (seg.t === 'turn') flip = (seg.fF ?? (seg.fF = flip)) + ((seg.tF ?? (seg.tF = -flip)) - seg.fF) * easeIO(p);
+      bodyG.setAttribute('transform', `rotate(${(Math.sin(el * .0018) * 2.1).toFixed(2)} 100 82)`);
+      head.setAttribute('transform', `rotate(${(Math.sin(el * .0022 + 1.2) * 3).toFixed(2)} 130 62)`);
+      const tw = seg.t === 'pause' ? Math.sin(el * .03) * 8 : Math.sin(el * .004) * 4;
+      tail.setAttribute('transform', `rotate(${tw.toFixed(1)} 58 68)`);
+      svg.querySelector('.xflip').setAttribute('transform', `translate(105 0) scale(${flip.toFixed(3)} 1) translate(-105 0)`);
+      unit.style.transform = `translate3d(${(xF * maxX).toFixed(1)}px,${(Math.sin(el * .0022) * 2.8).toFixed(1)}px,0)`;
+      if (seg.t === 'go' && el - wakeAt > 620){
+        wakeAt = el;
+        const c = relC(unit, slot);
+        const r = fxSpawn(slot, 'ring', { left: (c.cx - flip * c.w * .34 - 45) + 'px', top: (c.bottom - 30) + 'px',
+          width: '90px', height: '90px', borderColor: 'rgba(90,160,220,.75)' });
+        A(r, [{ transform: 'scale(.22,.07)', opacity: .85 }, { transform: 'scale(1.15,.36)', opacity: 0 }], { duration: 1250 }).then(() => r.remove());
+      }
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+  });
+}
+/* ---- the hen: little hops, wing flutter, pecks between hops ---- */
+function henSVG(){
+  return `<svg class="livesvg" data-cx="100" viewBox="0 0 200 140" role="img" aria-label="A hen hopping">
+    <ellipse cx="100" cy="131" rx="52" ry="5" fill="rgba(80,55,20,.28)"/>
+    <g class="xflip">
+      <g class="legsg" data-piv="96 102">
+        <path d="M86,100 L85,122 M85,122 L79,126 M85,122 L86,127 M85,122 L91,126" stroke="#E8890C" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+        <path d="M106,100 L107,122 M107,122 L101,126 M107,122 L108,127 M107,122 L113,126" stroke="#E8890C" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+      </g>
+      <g class="bodyg">
+        <g class="tailg" data-piv="60 62">
+          <path d="M62,64 C48,60 40,48 40,34 M66,60 C58,48 58,36 64,24 M72,60 C70,46 74,34 82,26" stroke="#EFE6D2" stroke-width="7" fill="none" stroke-linecap="round"/>
+        </g>
+        <ellipse cx="98" cy="80" rx="45" ry="29" fill="#FBF7EE"/>
+        <ellipse cx="98" cy="90" rx="34" ry="16" fill="#F3EAD2" opacity=".65"/>
+        <g class="wingg" data-piv="106 68"><ellipse cx="90" cy="80" rx="22" ry="12.5" fill="#F1E7D0"/><path d="M74,76 q16,8 32,1" stroke="#DECFA8" stroke-width="2.2" fill="none"/></g>
+        <g class="headg" data-piv="128 62">
+          <path d="M124,68 C128,58 132,52 138,48 L148,54 C142,60 140,64 140,70 Z" fill="#FBF7EE"/>
+          <circle cx="143" cy="46" r="13.5" fill="#FBF7EE"/>
+          <circle cx="135" cy="33" r="5" fill="#E2483D"/><circle cx="143" cy="30.5" r="5.6" fill="#E2483D"/><circle cx="151" cy="33" r="5" fill="#E2483D"/>
+          <path d="M155,43 L169,47.5 L155,52 Z" fill="#F59A23"/>
+          <ellipse cx="150" cy="57" rx="4" ry="6" fill="#E2483D"/>
+          <circle cx="147" cy="43" r="2.4" fill="#26221E"/><circle cx="148" cy="42" r=".9" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </svg>`;
+}
+function perfHenHop(slot, svgHTML){
+  return new Promise(resolve => {
+    const unit = liveUnit(slot, svgHTML, 'min(158px,42vw)', '22px');
+    const svg = unit.querySelector('svg');
+    const bodyG = svg.querySelector('.bodyg'), head = svg.querySelector('.headg'),
+          tail = svg.querySelector('.tailg'), legsG = svg.querySelector('.legsg'),
+          wing = svg.querySelector('.wingg');
+    const plan = [];
+    const hops = (n, dir) => { for (let i = 0; i < n; i++) plan.push({ t: 'hop', dir, dur: 370 }); };
+    hops(4, 1); plan.push({ t: 'pause', dur: 950, pecks: 2 }); plan.push({ t: 'turn', dur: 280 });
+    hops(4, -1); plan.push({ t: 'pause', dur: 650, pecks: 1 }); plan.push({ t: 'turn', dur: 280 });
+    hops(2, 1);
+    let total = 0, xF = .06;
+    for (const s of plan){ s.start = total; total += s.dur; if (s.t === 'hop'){ s.x0 = xF; xF += s.dir * .104; s.x1 = xF; } s.x = xF; }
+    let raf = 0, t0 = null, flip = 1;
+    const frame = now => {
+      if (!slot.contains(unit)){ cancelAnimationFrame(raf); resolve(); return; }
+      if (t0 === null) t0 = now;
+      const el = now - t0;
+      const maxX = Math.max(60, slot.clientWidth - unit.clientWidth - 6);
+      if (el >= total){ resolve(); return; }
+      const seg = plan.find(s => el >= s.start && el < s.start + s.dur);
+      const p = (el - seg.start) / seg.dur;
+      let x = seg.x, y = 0, air = 0, dip = 0;
+      if (seg.t === 'hop'){
+        x = seg.x0 + (seg.x1 - seg.x0) * easeIO(p);
+        air = Math.sin(p * Math.PI);
+        y = -air * 30;
+      } else if (seg.t === 'turn'){
+        flip = (seg.fF ?? (seg.fF = flip)) + ((seg.tF ?? (seg.tF = -flip)) - seg.fF) * easeIO(p);
+        y = -Math.sin(p * Math.PI) * 9;
+      } else if (seg.t === 'pause'){
+        for (let k = 0; k < (seg.pecks || 0); k++){
+          const lt = el - seg.start - 120 - k * 400;
+          if (lt > 0 && lt < 280) dip = Math.max(dip, Math.sin(lt / 280 * Math.PI) * 24);
+        }
+      }
+      const sq = seg.t === 'hop' && p > .88 ? .93 : 1;
+      bodyG.setAttribute('transform', `translate(0 ${(108 * (1 - sq)).toFixed(1)}) scale(1 ${sq}) rotate(${(-6 * air).toFixed(1)} 96 84)`);
+      head.setAttribute('transform', `rotate(${dip.toFixed(1)} 128 62)`);
+      tail.setAttribute('transform', `rotate(${(Math.sin(el * .01) * (seg.t === 'pause' ? 7 : 3)).toFixed(1)} 60 62)`);
+      legsG.setAttribute('transform', `rotate(${(-17 * air).toFixed(1)} 96 102)`);
+      wing.setAttribute('transform', `rotate(${(Math.sin(el * .085) * 22 * air).toFixed(1)} 106 68)`);
+      svg.querySelector('.xflip').setAttribute('transform', `translate(100 0) scale(${flip.toFixed(3)} 1) translate(-100 0)`);
+      unit.style.transform = `translate3d(${(x * maxX).toFixed(1)}px,${y.toFixed(1)}px,0)`;
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+  });
+}
+/* species dispatch — data flag `live` names the animal */
+const LIVE_PERF = {
+  ant: perfAnt,
+  cat: s => perfWalk(s, quadSVG(QUAD_ART.cat), QUAD_CFG.cat),
+  dog: s => perfWalk(s, quadSVG(QUAD_ART.dog), QUAD_CFG.dog),
+  goat: s => perfWalk(s, quadSVG(QUAD_ART.goat), QUAD_CFG.goat),
+  horse: s => perfWalk(s, quadSVG(QUAD_ART.horse), QUAD_CFG.horse),
+  lion: s => perfWalk(s, quadSVG(QUAD_ART.lion), QUAD_CFG.lion),
+  zebra: s => perfWalk(s, quadSVG(QUAD_ART.zebra), QUAD_CFG.zebra),
+  panda: s => perfWalk(s, quadSVG(QUAD_ART.panda), QUAD_CFG.panda),
+  lizard: s => perfWalk(s, quadSVG(QUAD_ART.lizard), QUAD_CFG.lizard),
+  ostrich: s => perfWalk(s, ostrichSVG(), { step: 30, swing: 16, bend: 24, headDip: 8, w: 'min(172px,45vw)' }),
+  owl: s => perfBirdFly(s, birdSVG(BIRD_ART.owl), {}),
+  parrot: s => perfBirdFly(s, birdSVG(BIRD_ART.parrot), {}),
+  quail: s => perfBirdFly(s, birdSVG(BIRD_ART.quail), { w: 'min(150px,40vw)' }),
+  fish: s => perfFishSwim(s, fishSVG()),
+  duck: s => perfDuckSwim(s, duckSVG()),
+  hen: s => perfHenHop(s, henSVG())
+};
+
 /* rain falls over the static book page (U Science) */
 async function perfRain(slot, L){
   slot.innerHTML = `<img class="perfbg" src="${L.pageImg}" alt="Your book page">`;
@@ -1205,9 +1767,12 @@ async function runPerformance(slot, label, p, L){
   const w = p.page ? null : wordObj(p.img);
   const src = p.page ? L.pageImg : w.img;
   const say = p.say || (PERF_SAY[p.do] && w ? PERF_SAY[p.do](w.say) : null);
-  if (p.live){ /* the living ant: drawn character, picture never moves */
+  if (p.live){ /* living characters: a DRAWN animal performs its own
+     natural movement; the book picture never moves (owner's rule,
+     first the ant, now every animal hero — see LIVE_PERF) */
     label.textContent = say || '';
-    await Promise.all([perfAnt(slot), say ? Voice.say(say) : Promise.resolve(), waitP(900)]);
+    const fn = LIVE_PERF[p.live === true ? 'ant' : p.live] || perfAnt;
+    await Promise.all([fn(slot), say ? Voice.say(say) : Promise.resolve(), waitP(900)]);
     return;
   }
   const round = p.do === 'roll' || p.do === 'spin';

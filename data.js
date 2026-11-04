@@ -52,7 +52,7 @@ window.GAME_DATA = {
       {
        "img": "ant",
        "do": "walk",
-       "live": true,
+       "live": "ant",
        "say": "Look! The ant is walking! Ants have six little legs."
       },
       {
@@ -129,7 +129,7 @@ window.GAME_DATA = {
     "plural": "balls",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -206,7 +206,7 @@ window.GAME_DATA = {
     "plural": "cakes",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -218,7 +218,8 @@ window.GAME_DATA = {
      "perf": [
       {
        "img": "cat",
-       "do": "walk"
+       "do": "walk",
+       "live": "cat"
       }
      ]
     },
@@ -283,7 +284,7 @@ window.GAME_DATA = {
     "plural": "dogs",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -296,11 +297,13 @@ window.GAME_DATA = {
      "perf": [
       {
        "img": "dog",
-       "do": "walk"
+       "do": "walk",
+       "live": "dog"
       },
       {
        "img": "duck",
-       "do": "swim"
+       "do": "swim",
+       "live": "duck"
       }
      ]
     },
@@ -370,7 +373,7 @@ window.GAME_DATA = {
     "plural": "eggs",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -460,7 +463,7 @@ window.GAME_DATA = {
     "plural": "fish",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -472,7 +475,8 @@ window.GAME_DATA = {
      "perf": [
       {
        "img": "fish",
-       "do": "swim"
+       "do": "swim",
+       "live": "fish"
       }
      ]
     },
@@ -542,7 +546,7 @@ window.GAME_DATA = {
     "plural": "grapes",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -555,7 +559,8 @@ window.GAME_DATA = {
      "perf": [
       {
        "img": "goat",
-       "do": "walk"
+       "do": "walk",
+       "live": "goat"
       },
       {
        "img": "grapes",
@@ -623,7 +628,7 @@ window.GAME_DATA = {
     "plural": "hens",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -636,11 +641,13 @@ window.GAME_DATA = {
      "perf": [
       {
        "img": "horse",
-       "do": "walk"
+       "do": "walk",
+       "live": "horse"
       },
       {
        "img": "hen",
-       "do": "hop"
+       "do": "hop",
+       "live": "hen"
       }
      ]
     },
@@ -715,7 +722,7 @@ window.GAME_DATA = {
     "plural": "ice creams",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -796,7 +803,7 @@ window.GAME_DATA = {
     "plural": "jellies",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -872,7 +879,7 @@ window.GAME_DATA = {
     "plural": "keys",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -948,7 +955,7 @@ window.GAME_DATA = {
     "plural": "lemons",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -961,11 +968,13 @@ window.GAME_DATA = {
      "perf": [
       {
        "img": "lion",
-       "do": "walk"
+       "do": "walk",
+       "live": "lion"
       },
       {
        "img": "lizard",
-       "do": "walk"
+       "do": "walk",
+       "live": "lizard"
       }
      ]
     },
@@ -1029,7 +1038,7 @@ window.GAME_DATA = {
     "plural": "monkeys",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -1105,7 +1114,7 @@ window.GAME_DATA = {
     "plural": "nuts",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -1181,7 +1190,7 @@ window.GAME_DATA = {
     "plural": "owls",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -1194,11 +1203,13 @@ window.GAME_DATA = {
      "perf": [
       {
        "img": "owl",
-       "do": "fly"
+       "do": "fly",
+       "live": "owl"
       },
       {
        "img": "ostrich",
-       "do": "walk"
+       "do": "walk",
+       "live": "ostrich"
       }
      ]
     },
@@ -1219,6 +1230,7 @@ window.GAME_DATA = {
       {
        "img": "ostrich",
        "do": "walk",
+       "live": "ostrich",
        "say": "Look at the strong legs! Walking, walking!"
       }
      ]
@@ -1270,7 +1282,7 @@ window.GAME_DATA = {
     "plural": "pears",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -1283,11 +1295,13 @@ window.GAME_DATA = {
      "perf": [
       {
        "img": "panda",
-       "do": "walk"
+       "do": "walk",
+       "live": "panda"
       },
       {
        "img": "parrot",
-       "do": "fly"
+       "do": "fly",
+       "live": "parrot"
       }
      ]
     },
@@ -1357,7 +1371,7 @@ window.GAME_DATA = {
     "plural": "quails",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -1369,7 +1383,8 @@ window.GAME_DATA = {
      "perf": [
       {
        "img": "quail",
-       "do": "fly"
+       "do": "fly",
+       "live": "quail"
       }
      ]
     },
@@ -1434,7 +1449,7 @@ window.GAME_DATA = {
     "plural": "rabbits",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -1522,7 +1537,7 @@ window.GAME_DATA = {
     "plural": "spoons",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -1605,7 +1620,7 @@ window.GAME_DATA = {
     "plural": "tomatoes",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -1689,7 +1704,7 @@ window.GAME_DATA = {
     "plural": "umbrellas",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -1772,7 +1787,7 @@ window.GAME_DATA = {
     "plural": "vases",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -1852,7 +1867,7 @@ window.GAME_DATA = {
     "plural": "wheels",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -1942,7 +1957,7 @@ window.GAME_DATA = {
     "plural": "xylophones",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -2035,7 +2050,7 @@ window.GAME_DATA = {
     "plural": "yo yos",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -2126,7 +2141,7 @@ window.GAME_DATA = {
     "plural": "zebras",
     "n": 3
    },
-   "ready": false,
+   "ready": true,
    "steam": [
     {
      "strand": "Science",
@@ -2138,7 +2153,8 @@ window.GAME_DATA = {
      "perf": [
       {
        "img": "zebra",
-       "do": "walk"
+       "do": "walk",
+       "live": "zebra"
       }
      ]
     },

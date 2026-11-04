@@ -34,10 +34,15 @@ Every observe cell gets a `perf` list (one entry per hero picture):
              identify beat rather than an observable process
   say     optional spoken line override during the performance
   variant / fruit: archetype parameters
-  live    True only for the A ant (owner's correction, 2026-11-04):
-          "Don't move picture of ant" — the book picture stays still
-          as the tap card and a DRAWN living ant performs on stage
-          instead (engine: perfAnt in index.html, keyed on this flag).
+  live    Species key for a DRAWN LIVING character (owner's rule,
+          2026-11-04, first for the ant: "Don't move picture of ant",
+          then extended to every animal hero): the book picture stays
+          still as the tap card and the drawn animal performs its own
+          natural movement on stage (engines in index.html: perfAnt,
+          perfQuad, perfBirdFly, perfFishSwim, perfDuckSwim,
+          perfHenHop, perfOstrich — dispatched via LIVE_PERF).
+          Animal heroes whose performance is NOT a movement (none at
+          present) and all 'look' beats keep the picture behaviour.
 
 apply_perf(data) mutates the parsed GAME_DATA dict in place and returns
 a Counter of archetypes used (counted per hero).
@@ -47,7 +52,7 @@ PERF = {
     # A Science is the owner's own pair of examples: the ant walks, and
     # the apple's growth is performed stage by stage.
     ('a', 'Science'): [
-        {'img': 'ant', 'do': 'walk', 'live': True,
+        {'img': 'ant', 'do': 'walk', 'live': 'ant',
          'say': 'Look! The ant is walking! Ants have six little legs.'},
         {'img': 'apple', 'do': 'grow-tree', 'fruit': 'apple'},
     ],
@@ -55,20 +60,20 @@ PERF = {
     ('b', 'Science'): [
         {'img': 'ball', 'do': 'roll', 'variant': 'bounce',
          'say': 'Look! The ball rolls and bounces!'}],
-    ('c', 'Science'): [{'img': 'cat', 'do': 'walk'}],
-    ('d', 'Science'): [{'img': 'dog', 'do': 'walk'},
-                       {'img': 'duck', 'do': 'swim'}],
+    ('c', 'Science'): [{'img': 'cat', 'do': 'walk', 'live': 'cat'}],
+    ('d', 'Science'): [{'img': 'dog', 'do': 'walk', 'live': 'dog'},
+                       {'img': 'duck', 'do': 'swim', 'live': 'duck'}],
     ('d', 'Engineering'): [{'img': 'drum', 'do': 'roll'}],
     ('e', 'Science'): [{'img': 'eye', 'do': 'look'}],
     ('e', 'Technology'): [{'img': 'egg', 'do': 'look'}],
     ('e', 'Engineering'): [{'img': 'egg', 'do': 'look'}],
-    ('f', 'Science'): [{'img': 'fish', 'do': 'swim'}],
+    ('f', 'Science'): [{'img': 'fish', 'do': 'swim', 'live': 'fish'}],
     ('f', 'Engineering'): [{'img': 'fish', 'do': 'look'}],
-    ('g', 'Science'): [{'img': 'goat', 'do': 'walk'},
+    ('g', 'Science'): [{'img': 'goat', 'do': 'walk', 'live': 'goat'},
                        {'img': 'grapes', 'do': 'grow-plant',
                         'fruit': 'grapes'}],
-    ('h', 'Science'): [{'img': 'horse', 'do': 'walk'},
-                       {'img': 'hen', 'do': 'hop'}],
+    ('h', 'Science'): [{'img': 'horse', 'do': 'walk', 'live': 'horse'},
+                       {'img': 'hen', 'do': 'hop', 'live': 'hen'}],
     ('h', 'Engineering'): [{'img': 'horse', 'do': 'look'},
                            {'img': 'hen', 'do': 'look'}],
     ('i', 'Science'): [
@@ -80,21 +85,21 @@ PERF = {
     ('k', 'Science'): [
         {'img': 'kettle', 'do': 'wave', 'variant': 'steam',
          'say': 'Look! Hot steam goes up! We watch. We do not touch.'}],
-    ('l', 'Science'): [{'img': 'lion', 'do': 'walk'},
-                       {'img': 'lizard', 'do': 'walk'}],
+    ('l', 'Science'): [{'img': 'lion', 'do': 'walk', 'live': 'lion'},
+                       {'img': 'lizard', 'do': 'walk', 'live': 'lizard'}],
     ('m', 'Science'): [
         {'img': 'moon', 'do': 'glow',
          'say': 'Look! The moon shines in the night sky!'}],
     ('n', 'Science'): [{'img': 'nest', 'do': 'look'}],
-    ('o', 'Science'): [{'img': 'owl', 'do': 'fly'},
-                       {'img': 'ostrich', 'do': 'walk'}],
+    ('o', 'Science'): [{'img': 'owl', 'do': 'fly', 'live': 'owl'},
+                       {'img': 'ostrich', 'do': 'walk', 'live': 'ostrich'}],
     ('o', 'Engineering'): [
-        {'img': 'ostrich', 'do': 'walk',
+        {'img': 'ostrich', 'do': 'walk', 'live': 'ostrich',
          'say': 'Look at the strong legs! Walking, walking!'}],
-    ('p', 'Science'): [{'img': 'panda', 'do': 'walk'},
-                       {'img': 'parrot', 'do': 'fly'}],
+    ('p', 'Science'): [{'img': 'panda', 'do': 'walk', 'live': 'panda'},
+                       {'img': 'parrot', 'do': 'fly', 'live': 'parrot'}],
     ('p', 'Engineering'): [{'img': 'parrot', 'do': 'look'}],
-    ('q', 'Science'): [{'img': 'quail', 'do': 'fly'}],
+    ('q', 'Science'): [{'img': 'quail', 'do': 'fly', 'live': 'quail'}],
     ('r', 'Science'): [
         {'img': 'rocket', 'do': 'rise',
          'say': 'Look! The rocket goes up, up, up!'}],
@@ -135,7 +140,7 @@ PERF = {
     ('y', 'Engineering'): [
         {'img': 'yo-yo', 'do': 'updown',
          'say': 'Up and down! The string holds the yo-yo!'}],
-    ('z', 'Science'): [{'img': 'zebra', 'do': 'walk'}],
+    ('z', 'Science'): [{'img': 'zebra', 'do': 'walk', 'live': 'zebra'}],
     ('z', 'Engineering'): [{'img': 'zip', 'do': 'look'}],
 }
 
