@@ -1,0 +1,574 @@
+{
+ "a": [
+  {
+   "strand": "Science",
+   "text": "Observe how ants move and apples grow."
+  },
+  {
+   "strand": "Technology",
+   "text": "An axe is for grown-ups. We look, not touch."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Build a tall tree with blocks."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and colour a shiny red apple."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Compare sizes of apple, ant and axe."
+  }
+ ],
+ "b": [
+  {
+   "strand": "Science",
+   "text": "Observe how a ball rolls and bounces."
+  },
+  {
+   "strand": "Technology",
+   "text": "Identify the school bus as transportation"
+  },
+  {
+   "strand": "Engineering",
+   "text": "Explore the wheels that help buses move."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and colour a bat and ball."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Identify the round shape of the ball."
+  }
+ ],
+ "c": [
+  {
+   "strand": "Science",
+   "text": "Observe the cat\u2019s soft fur and movement."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore simple tools used for baking cakes."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how cake layers are stacked carefully."
+  },
+  {
+   "strand": "Art",
+   "text": "Decorate a colourful birthday cake creatively."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Count the visible layers of the cake."
+  }
+ ],
+ "d": [
+  {
+   "strand": "Science",
+   "text": "Observe how dogs and ducks move differently."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore how a drum produces sound."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice the round structure of the drum."
+  },
+  {
+   "strand": "Art",
+   "text": "Create simple patterns for a toy drum."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Count the dog, duck and drum."
+  }
+ ],
+ "e": [
+  {
+   "strand": "Science",
+   "text": "Observe how eyes help us see things."
+  },
+  {
+   "strand": "Technology",
+   "text": "Look at an egg through a magnifying glass."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice the strong curved shape of eggs."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and colour an eagle and egg."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Compare the sizes of eagle and egg."
+  }
+ ],
+ "f": [
+  {
+   "strand": "Science",
+   "text": "Observe how fish live and move in water."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore how aquariums provide homes for fish."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how an aquarium safely holds water."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and colour a bright tropical fish."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Sort the fruits by colour and size."
+  }
+ ],
+ "g": [
+  {
+   "strand": "Science",
+   "text": "Observe what goats eat and how grapes grow."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore tools farmers use to collect grapes."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Make a little path with blocks for the goat."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and colour a bunch of grapes."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Compare the sizes of goat and grapes."
+  }
+ ],
+ "h": [
+  {
+   "strand": "Science",
+   "text": "Observe how horses and hens move differently."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore tools used to care for horses."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how fences keep farm animals safe."
+  },
+  {
+   "strand": "Art",
+   "text": "Design and colour a beautiful hat."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Compare the sizes of horse and hen."
+  }
+ ],
+ "i": [
+  {
+   "strand": "Science",
+   "text": "Observe how ice melts when it becomes warm."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore how freezers keep ice cold."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how containers safely hold liquids."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw a colourful ice-cream cone."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Compare the sizes of ice cubes."
+  }
+ ],
+ "j": [
+  {
+   "strand": "Science",
+   "text": "Observe how soft jelly changes its shape."
+  },
+  {
+   "strand": "Technology",
+   "text": "Identify the jeep as a transport vehicle."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Explore how wheels help a jeep move."
+  },
+  {
+   "strand": "Art",
+   "text": "Create colourful jelly shapes and patterns."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Compare the sizes of jelly pieces."
+  }
+ ],
+ "k": [
+  {
+   "strand": "Science",
+   "text": "The teacher shows hot steam. Children watch, never touch."
+  },
+  {
+   "strand": "Technology",
+   "text": "Identify the kettle as a useful appliance."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Explore how a key fits into a lock."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and decorate a royal crown."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Compare the sizes of key and kettle."
+  }
+ ],
+ "l": [
+  {
+   "strand": "Science",
+   "text": "Observe how lions and lizards live differently."
+  },
+  {
+   "strand": "Technology",
+   "text": "Carry the lemons in a basket."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Stack stones and blocks to build a strong tower."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and colour bright yellow lemons."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Count the lemons growing on the plant."
+  }
+ ],
+ "m": [
+  {
+   "strand": "Science",
+   "text": "Observe the moon and different animal movements."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore tools used to observe the moon."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Build a tall tower with blocks to reach the moon."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and colour a bright round moon."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Compare the sizes of monkey and mouse."
+  }
+ ],
+ "n": [
+  {
+   "strand": "Science",
+   "text": "Observe how birds build nests for their eggs."
+  },
+  {
+   "strand": "Technology",
+   "text": "Identify a net as a useful catching tool."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Explore how twigs make a strong nest."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and colour a bird\u2019s nest."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Count the nuts placed near the tree."
+  }
+ ],
+ "o": [
+  {
+   "strand": "Science",
+   "text": "Observe how an owl and ostrich differ."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore tools used to observe birds safely."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how strong bird legs support movement."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and colour a round onion."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Count the onions shown in the scene."
+  }
+ ],
+ "p": [
+  {
+   "strand": "Science",
+   "text": "Observe what pandas and parrots like to eat."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore tools used to grow and collect fruits."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how a bird perch supports the parrot."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and colour a pear and parrot."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Compare the sizes of panda, parrot and pear."
+  }
+ ],
+ "q": [
+  {
+   "strand": "Science",
+   "text": "Observe the feathers and movement of a quail."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore tools used for stitching a quilt."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how fabric pieces join to make a quilt."
+  },
+  {
+   "strand": "Art",
+   "text": "Create a colourful patchwork quilt pattern."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Identify and count the shapes in the quilt."
+  }
+ ],
+ "r": [
+  {
+   "strand": "Science",
+   "text": "Observe how a rocket travels through the sky."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore how a remote controls a robot."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice the different parts of robots and rockets."
+  },
+  {
+   "strand": "Art",
+   "text": "Design and colour a creative toy rocket."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Compare the sizes of rocket, robot and rabbit."
+  }
+ ],
+ "s": [
+  {
+   "strand": "Science",
+   "text": "Observe how the sun gives us light and warmth."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore simple tools we use for eating."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice the curved shape of a spoon."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and colour a bright shining sun."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Compare the sizes of sparrow and spoon."
+  }
+ ],
+ "t": [
+  {
+   "strand": "Science",
+   "text": "Observe how tomatoes grow on a plant."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore tools used for growing healthy plants."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how a strong tree trunk supports branches."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and colour a tiger and tomatoes."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Count the tomatoes growing on the plant."
+  }
+ ],
+ "u": [
+  {
+   "strand": "Science",
+   "text": "Observe how rain makes outdoor surfaces wet."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore how an umbrella protects us from rain."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how the umbrella opens and closes."
+  },
+  {
+   "strand": "Art",
+   "text": "Design a colourful pattern for an umbrella."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Identify the different sections of the umbrella."
+  }
+ ],
+ "v": [
+  {
+   "strand": "Science",
+   "text": "Identify different vegetables and how they help us grow."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore how a van carries people and goods."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how wheels help the van move."
+  },
+  {
+   "strand": "Art",
+   "text": "Observe and create decorative patterns on a vase."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Sort the vegetables by colour, shape or size."
+  }
+ ],
+ "w": [
+  {
+   "strand": "Science",
+   "text": "Observe how water flows through the rocky stream."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore how a watch helps us know time."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how bicycle wheels help it move."
+  },
+  {
+   "strand": "Art",
+   "text": "Draw and colour a beautiful mountain scene."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Identify the round shapes of watch and wheels."
+  }
+ ],
+ "x": [
+  {
+   "strand": "Science",
+   "text": "An X-ray is a special photo of our bones."
+  },
+  {
+   "strand": "Technology",
+   "text": "The doctor takes this photo with a big camera."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how different xylophone bars produce sounds."
+  },
+  {
+   "strand": "Art",
+   "text": "Create a colourful pattern using xylophone bars."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Count and compare the xylophone bars."
+  }
+ ],
+ "y": [
+  {
+   "strand": "Science",
+   "text": "Observe the movement of a yoyo going up and down."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore how a yacht travels across water."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how the yoyo string controls its movement."
+  },
+  {
+   "strand": "Art",
+   "text": "Design and colour a beautiful yoyo."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Compare the sizes of yoyo, yacht and yak."
+  }
+ ],
+ "z": [
+  {
+   "strand": "Science",
+   "text": "Observe the unique black and white stripes of a zebra."
+  },
+  {
+   "strand": "Technology",
+   "text": "Explore how a zip opens and closes a bag."
+  },
+  {
+   "strand": "Engineering",
+   "text": "Notice how interlocking zip teeth work together."
+  },
+  {
+   "strand": "Art",
+   "text": "Create a black-and-white zebra stripe pattern."
+  },
+  {
+   "strand": "Mathematics",
+   "text": "Identify and repeat the alternating stripe pattern."
+  }
+ ]
+}

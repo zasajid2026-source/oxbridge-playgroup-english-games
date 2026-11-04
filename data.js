@@ -2,7 +2,7 @@
    All pictures are cropped from the book's own pages, exactly as printed,
    so children recognise them in their physical book. */
 window.GAME_DATA = {
- "title": "Oxbridge Playgroup English — Learning Games",
+ "title": "Oxbridge Playgroup English \u2014 Learning Games",
  "hostImg": "img/host-boy.webp",
  "letters": [
   {
@@ -38,7 +38,44 @@ window.GAME_DATA = {
     "plural": "apples",
     "n": 3
    },
-   "ready": true
+   "ready": true,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how ants move and apples grow.",
+     "play": "observe",
+     "imgs": [
+      "ant",
+      "apple"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "An axe is for grown-ups. We look, not touch.",
+     "play": "observe",
+     "imgs": [
+      "axe"
+     ]
+    },
+    {
+     "strand": "Engineering",
+     "text": "Build a tall tree with blocks.",
+     "play": "build",
+     "img": "apple",
+     "variant": "blocks"
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and colour a shiny red apple.",
+     "play": "colour",
+     "img": "apple"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Compare sizes of apple, ant and axe.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "b",
@@ -73,7 +110,41 @@ window.GAME_DATA = {
     "plural": "balls",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how a ball rolls and bounces.",
+     "play": "observe",
+     "imgs": [
+      "ball"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Identify the school bus as transportation",
+     "play": "tap",
+     "target": "bus"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Explore the wheels that help buses move.",
+     "play": "tap",
+     "target": "bus"
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and colour a bat and ball.",
+     "play": "colour",
+     "img": "bat"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Identify the round shape of the ball.",
+     "play": "tap",
+     "target": "ball"
+    }
+   ]
   },
   {
    "letter": "c",
@@ -108,7 +179,43 @@ window.GAME_DATA = {
     "plural": "cakes",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe the cat\u2019s soft fur and movement.",
+     "play": "observe",
+     "imgs": [
+      "cat"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore simple tools used for baking cakes.",
+     "play": "tap",
+     "target": "cake"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how cake layers are stacked carefully.",
+     "play": "build",
+     "img": "cake",
+     "variant": "blocks"
+    },
+    {
+     "strand": "Art",
+     "text": "Decorate a colourful birthday cake creatively.",
+     "play": "colour",
+     "img": "cake"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Count the visible layers of the cake.",
+     "play": "count",
+     "word": "cake",
+     "label": "layers"
+    }
+   ]
   },
   {
    "letter": "d",
@@ -143,7 +250,43 @@ window.GAME_DATA = {
     "plural": "dogs",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how dogs and ducks move differently.",
+     "play": "observe",
+     "imgs": [
+      "dog",
+      "duck"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore how a drum produces sound.",
+     "play": "tap",
+     "target": "drum"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice the round structure of the drum.",
+     "play": "observe",
+     "imgs": [
+      "drum"
+     ]
+    },
+    {
+     "strand": "Art",
+     "text": "Create simple patterns for a toy drum.",
+     "play": "colour",
+     "img": "drum"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Count the dog, duck and drum.",
+     "play": "count3"
+    }
+   ]
   },
   {
    "letter": "e",
@@ -178,7 +321,44 @@ window.GAME_DATA = {
     "plural": "eggs",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how eyes help us see things.",
+     "play": "observe",
+     "imgs": [
+      "eye"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Look at an egg through a magnifying glass.",
+     "play": "observe",
+     "imgs": [
+      "egg"
+     ]
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice the strong curved shape of eggs.",
+     "play": "observe",
+     "imgs": [
+      "egg"
+     ]
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and colour an eagle and egg.",
+     "play": "colour",
+     "img": "eagle"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Compare the sizes of eagle and egg.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "f",
@@ -213,7 +393,42 @@ window.GAME_DATA = {
     "plural": "fish",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how fish live and move in water.",
+     "play": "observe",
+     "imgs": [
+      "fish"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore how aquariums provide homes for fish.",
+     "play": "tap",
+     "target": "fish"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how an aquarium safely holds water.",
+     "play": "observe",
+     "imgs": [
+      "fish"
+     ]
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and colour a bright tropical fish.",
+     "play": "colour",
+     "img": "fish"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Sort the fruits by colour and size.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "g",
@@ -248,7 +463,42 @@ window.GAME_DATA = {
     "plural": "grapes",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe what goats eat and how grapes grow.",
+     "play": "observe",
+     "imgs": [
+      "goat",
+      "grapes"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore tools farmers use to collect grapes.",
+     "play": "tap",
+     "target": "grapes"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Make a little path with blocks for the goat.",
+     "play": "build",
+     "img": "goat",
+     "variant": "path"
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and colour a bunch of grapes.",
+     "play": "colour",
+     "img": "grapes"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Compare the sizes of goat and grapes.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "h",
@@ -283,7 +533,44 @@ window.GAME_DATA = {
     "plural": "hens",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how horses and hens move differently.",
+     "play": "observe",
+     "imgs": [
+      "horse",
+      "hen"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore tools used to care for horses.",
+     "play": "tap",
+     "target": "horse"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how fences keep farm animals safe.",
+     "play": "observe",
+     "imgs": [
+      "horse",
+      "hen"
+     ]
+    },
+    {
+     "strand": "Art",
+     "text": "Design and colour a beautiful hat.",
+     "play": "colour",
+     "img": "hat"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Compare the sizes of horse and hen.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "i",
@@ -318,7 +605,40 @@ window.GAME_DATA = {
     "plural": "ice creams",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how ice melts when it becomes warm.",
+     "play": "observe",
+     "imgs": [
+      "ice"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore how freezers keep ice cold.",
+     "play": "tap",
+     "target": "ice"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how containers safely hold liquids.",
+     "play": "observe",
+     "page": true
+    },
+    {
+     "strand": "Art",
+     "text": "Draw a colourful ice-cream cone.",
+     "play": "colour",
+     "img": "ice-cream"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Compare the sizes of ice cubes.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "j",
@@ -353,7 +673,40 @@ window.GAME_DATA = {
     "plural": "jellies",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how soft jelly changes its shape.",
+     "play": "observe",
+     "imgs": [
+      "jelly"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Identify the jeep as a transport vehicle.",
+     "play": "tap",
+     "target": "jeep"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Explore how wheels help a jeep move.",
+     "play": "tap",
+     "target": "jeep"
+    },
+    {
+     "strand": "Art",
+     "text": "Create colourful jelly shapes and patterns.",
+     "play": "colour",
+     "img": "jelly"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Compare the sizes of jelly pieces.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "k",
@@ -388,7 +741,40 @@ window.GAME_DATA = {
     "plural": "keys",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "The teacher shows hot steam. Children watch, never touch.",
+     "play": "observe",
+     "imgs": [
+      "kettle"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Identify the kettle as a useful appliance.",
+     "play": "tap",
+     "target": "kettle"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Explore how a key fits into a lock.",
+     "play": "tap",
+     "target": "key"
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and decorate a royal crown.",
+     "play": "colour",
+     "img": "king"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Compare the sizes of key and kettle.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "l",
@@ -423,7 +809,43 @@ window.GAME_DATA = {
     "plural": "lemons",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how lions and lizards live differently.",
+     "play": "observe",
+     "imgs": [
+      "lion",
+      "lizard"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Carry the lemons in a basket.",
+     "play": "count",
+     "word": "lemon"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Stack stones and blocks to build a strong tower.",
+     "play": "build",
+     "img": "lion",
+     "variant": "blocks"
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and colour bright yellow lemons.",
+     "play": "colour",
+     "img": "lemon"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Count the lemons growing on the plant.",
+     "play": "count",
+     "word": "lemon"
+    }
+   ]
   },
   {
    "letter": "m",
@@ -458,7 +880,41 @@ window.GAME_DATA = {
     "plural": "monkeys",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe the moon and different animal movements.",
+     "play": "observe",
+     "imgs": [
+      "moon"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore tools used to observe the moon.",
+     "play": "tap",
+     "target": "moon"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Build a tall tower with blocks to reach the moon.",
+     "play": "build",
+     "img": "moon",
+     "variant": "blocks"
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and colour a bright round moon.",
+     "play": "colour",
+     "img": "moon"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Compare the sizes of monkey and mouse.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "n",
@@ -493,7 +949,42 @@ window.GAME_DATA = {
     "plural": "nuts",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how birds build nests for their eggs.",
+     "play": "observe",
+     "imgs": [
+      "nest"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Identify a net as a useful catching tool.",
+     "play": "tap",
+     "target": "net"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Explore how twigs make a strong nest.",
+     "play": "build",
+     "img": "nest",
+     "variant": "blocks"
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and colour a bird\u2019s nest.",
+     "play": "colour",
+     "img": "nest"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Count the nuts placed near the tree.",
+     "play": "count",
+     "word": "nuts"
+    }
+   ]
   },
   {
    "letter": "o",
@@ -528,7 +1019,44 @@ window.GAME_DATA = {
     "plural": "owls",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how an owl and ostrich differ.",
+     "play": "observe",
+     "imgs": [
+      "owl",
+      "ostrich"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore tools used to observe birds safely.",
+     "play": "tap",
+     "target": "owl"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how strong bird legs support movement.",
+     "play": "observe",
+     "imgs": [
+      "ostrich"
+     ]
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and colour a round onion.",
+     "play": "colour",
+     "img": "onion"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Count the onions shown in the scene.",
+     "play": "count",
+     "word": "onion"
+    }
+   ]
   },
   {
    "letter": "p",
@@ -563,7 +1091,43 @@ window.GAME_DATA = {
     "plural": "pears",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe what pandas and parrots like to eat.",
+     "play": "observe",
+     "imgs": [
+      "panda",
+      "parrot"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore tools used to grow and collect fruits.",
+     "play": "tap",
+     "target": "pear"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how a bird perch supports the parrot.",
+     "play": "observe",
+     "imgs": [
+      "parrot"
+     ]
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and colour a pear and parrot.",
+     "play": "colour",
+     "img": "pear"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Compare the sizes of panda, parrot and pear.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "q",
@@ -598,7 +1162,43 @@ window.GAME_DATA = {
     "plural": "quails",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe the feathers and movement of a quail.",
+     "play": "observe",
+     "imgs": [
+      "quail"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore tools used for stitching a quilt.",
+     "play": "tap",
+     "target": "quilt"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how fabric pieces join to make a quilt.",
+     "play": "build",
+     "img": "quilt",
+     "variant": "blocks"
+    },
+    {
+     "strand": "Art",
+     "text": "Create a colourful patchwork quilt pattern.",
+     "play": "colour",
+     "img": "quilt"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Identify and count the shapes in the quilt.",
+     "play": "count",
+     "word": "quilt",
+     "label": "shapes"
+    }
+   ]
   },
   {
    "letter": "r",
@@ -633,7 +1233,43 @@ window.GAME_DATA = {
     "plural": "rabbits",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how a rocket travels through the sky.",
+     "play": "observe",
+     "imgs": [
+      "rocket"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore how a remote controls a robot.",
+     "play": "tap",
+     "target": "robot"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice the different parts of robots and rockets.",
+     "play": "observe",
+     "imgs": [
+      "robot",
+      "rocket"
+     ]
+    },
+    {
+     "strand": "Art",
+     "text": "Design and colour a creative toy rocket.",
+     "play": "colour",
+     "img": "rocket"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Compare the sizes of rocket, robot and rabbit.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "s",
@@ -668,7 +1304,42 @@ window.GAME_DATA = {
     "plural": "spoons",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how the sun gives us light and warmth.",
+     "play": "observe",
+     "imgs": [
+      "sun"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore simple tools we use for eating.",
+     "play": "tap",
+     "target": "spoon"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice the curved shape of a spoon.",
+     "play": "observe",
+     "imgs": [
+      "spoon"
+     ]
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and colour a bright shining sun.",
+     "play": "colour",
+     "img": "sun"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Compare the sizes of sparrow and spoon.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "t",
@@ -703,7 +1374,43 @@ window.GAME_DATA = {
     "plural": "tomatoes",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how tomatoes grow on a plant.",
+     "play": "observe",
+     "imgs": [
+      "tomato"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore tools used for growing healthy plants.",
+     "play": "tap",
+     "target": "tomato"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how a strong tree trunk supports branches.",
+     "play": "observe",
+     "imgs": [
+      "tree"
+     ]
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and colour a tiger and tomatoes.",
+     "play": "colour",
+     "img": "tiger"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Count the tomatoes growing on the plant.",
+     "play": "count",
+     "word": "tomato"
+    }
+   ]
   },
   {
    "letter": "u",
@@ -738,7 +1445,41 @@ window.GAME_DATA = {
     "plural": "umbrellas",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how rain makes outdoor surfaces wet.",
+     "play": "observe",
+     "page": true
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore how an umbrella protects us from rain.",
+     "play": "tap",
+     "target": "umbrella"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how the umbrella opens and closes.",
+     "play": "observe",
+     "imgs": [
+      "umbrella"
+     ]
+    },
+    {
+     "strand": "Art",
+     "text": "Design a colourful pattern for an umbrella.",
+     "play": "colour",
+     "img": "umbrella"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Identify the different sections of the umbrella.",
+     "play": "tap",
+     "target": "umbrella"
+    }
+   ]
   },
   {
    "letter": "v",
@@ -773,7 +1514,40 @@ window.GAME_DATA = {
     "plural": "vases",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Identify different vegetables and how they help us grow.",
+     "play": "observe",
+     "imgs": [
+      "vegetables"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore how a van carries people and goods.",
+     "play": "tap",
+     "target": "van"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how wheels help the van move.",
+     "play": "tap",
+     "target": "van"
+    },
+    {
+     "strand": "Art",
+     "text": "Observe and create decorative patterns on a vase.",
+     "play": "colour",
+     "img": "vase"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Sort the vegetables by colour, shape or size.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "w",
@@ -814,7 +1588,44 @@ window.GAME_DATA = {
     "plural": "wheels",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe how water flows through the rocky stream.",
+     "play": "observe",
+     "imgs": [
+      "water"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore how a watch helps us know time.",
+     "play": "tap",
+     "target": "watch"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how bicycle wheels help it move.",
+     "play": "tap",
+     "target": "wheel"
+    },
+    {
+     "strand": "Art",
+     "text": "Draw and colour a beautiful mountain scene.",
+     "play": "colour",
+     "img": "page"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Identify the round shapes of watch and wheels.",
+     "play": "observe",
+     "imgs": [
+      "watch",
+      "wheel"
+     ]
+    }
+   ]
   },
   {
    "letter": "x",
@@ -849,7 +1660,45 @@ window.GAME_DATA = {
     "plural": "xylophones",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "An X-ray is a special photo of our bones.",
+     "play": "observe",
+     "imgs": [
+      "x-ray"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "The doctor takes this photo with a big camera.",
+     "play": "observe",
+     "imgs": [
+      "x-ray"
+     ]
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how different xylophone bars produce sounds.",
+     "play": "observe",
+     "imgs": [
+      "xylophone"
+     ]
+    },
+    {
+     "strand": "Art",
+     "text": "Create a colourful pattern using xylophone bars.",
+     "play": "colour",
+     "img": "xylophone"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Count and compare the xylophone bars.",
+     "play": "count",
+     "word": "xylophone"
+    }
+   ]
   },
   {
    "letter": "y",
@@ -884,7 +1733,42 @@ window.GAME_DATA = {
     "plural": "yo yos",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe the movement of a yoyo going up and down.",
+     "play": "observe",
+     "imgs": [
+      "yo-yo"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore how a yacht travels across water.",
+     "play": "observe",
+     "page": true
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how the yoyo string controls its movement.",
+     "play": "observe",
+     "imgs": [
+      "yo-yo"
+     ]
+    },
+    {
+     "strand": "Art",
+     "text": "Design and colour a beautiful yoyo.",
+     "play": "colour",
+     "img": "yo-yo"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Compare the sizes of yoyo, yacht and yak.",
+     "play": "sort"
+    }
+   ]
   },
   {
    "letter": "z",
@@ -919,7 +1803,42 @@ window.GAME_DATA = {
     "plural": "zebras",
     "n": 3
    },
-   "ready": false
+   "ready": false,
+   "steam": [
+    {
+     "strand": "Science",
+     "text": "Observe the unique black and white stripes of a zebra.",
+     "play": "observe",
+     "imgs": [
+      "zebra"
+     ]
+    },
+    {
+     "strand": "Technology",
+     "text": "Explore how a zip opens and closes a bag.",
+     "play": "tap",
+     "target": "zip"
+    },
+    {
+     "strand": "Engineering",
+     "text": "Notice how interlocking zip teeth work together.",
+     "play": "observe",
+     "imgs": [
+      "zip"
+     ]
+    },
+    {
+     "strand": "Art",
+     "text": "Create a black-and-white zebra stripe pattern.",
+     "play": "colour",
+     "img": "zebra"
+    },
+    {
+     "strand": "Mathematics",
+     "text": "Identify and repeat the alternating stripe pattern.",
+     "play": "pattern"
+    }
+   ]
   }
  ]
 };

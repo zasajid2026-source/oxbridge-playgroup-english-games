@@ -167,6 +167,49 @@ main{max-width:960px;margin:0 auto;padding:14px 14px 30px}
 .finishstars .st{display:inline-block;filter:grayscale(1);opacity:.3}
 .finishstars .st.on{filter:none;opacity:1;animation:starPop .7s ease both}
 .finishmsg{font-size:27px;font-weight:800;color:var(--emerald)}
+/* ---------- STEAM Play station ---------- */
+.badges{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+.badge{
+  width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:22px;color:#fff;border:3px solid #fff;
+  box-shadow:0 3px 8px rgba(11,93,67,.15);transition:all .3s;opacity:.32;filter:grayscale(.7);
+}
+.badge.b0{background:#E5639A}.badge.b1{background:#6A67A8}.badge.b2{background:#F08A1D}
+.badge.b3{background:#A04E9E}.badge.b4{background:#3D9B47}
+.badge.now{opacity:1;filter:none;transform:scale(1.2);animation:hintWiggle .6s ease 2}
+.badge.on{opacity:1;filter:none}
+.steamtext{margin-top:16px;font-size:14.5px;font-weight:600;color:#7c8f83;line-height:1.4}
+.steamtext span{color:#47604f}
+.wcard.page{width:auto}
+.wcard.page img{width:auto;height:min(300px,44vh);aspect-ratio:auto}
+.wcard .tick{
+  position:absolute;top:-12px;right:-10px;width:46px;height:46px;border-radius:50%;
+  background:var(--emerald);color:#fff;font-size:26px;font-weight:800;display:none;
+  align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.25);
+}
+.wcard{position:relative}
+.wcard.done .tick{display:flex;animation:starPop .5s ease}
+.swatchrow{display:flex;gap:16px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.swatch{width:76px;height:76px;border-radius:50%;border:4px solid #fff;box-shadow:0 5px 12px rgba(0,0,0,.22);cursor:pointer;font-family:inherit}
+.swatch:active{transform:scale(.9)}
+.colourframe{display:inline-block;padding:10px;border:10px solid #D8E4DA;border-radius:24px;background:#fff;transition:border-color .35s,background .35s}
+.colourframe img{width:min(240px,54vw);aspect-ratio:1;object-fit:cover;border-radius:14px;display:block}
+.colourframe.pagef img{width:auto;height:min(300px,44vh);aspect-ratio:auto}
+.buildarea{min-height:250px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.stack{display:flex;flex-direction:column-reverse;align-items:center}
+.block{width:150px;height:42px;border-radius:10px;margin-top:4px;border:3px solid rgba(0,0,0,.14);animation:fadeIn .3s ease}
+.stonerow{display:flex;gap:9px;align-items:flex-end;justify-content:center;min-height:110px;flex-wrap:wrap}
+.stone{width:72px;height:52px;border-radius:50%;background:#B9C0C4;border:3px solid #8F979C;display:flex;align-items:center;justify-content:center;font-size:24px;animation:fadeIn .3s ease}
+.topper{width:104px;height:104px;object-fit:cover;border-radius:18px;border:4px solid var(--gold);margin-bottom:6px;animation:starPop .6s ease;background:#fff}
+.patdisplay{display:flex;gap:10px;justify-content:center;margin:8px 0 18px;flex-wrap:wrap}
+.patdot{width:50px;height:50px;border-radius:50%;border:4px solid #CFD8CF;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:800;color:#8A6D1A;background:#fff}
+.patdot.k{background:#263238;border-color:#263238}
+.patdot.q{background:#FFF3C4;border-style:dashed}
+.patiles{display:flex;gap:22px;justify-content:center}
+.patile{width:102px;height:102px;border-radius:24px;background:#fff;border:4px solid #D8E4DA;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.patile:active{transform:scale(.94)}
+.patile .patdot{width:62px;height:62px}
+.patile.shake{animation:shake .45s ease}
 .sparkle{
   position:absolute;font-size:24px;pointer-events:none;z-index:5;
   animation:sparkFly .85s ease-out forwards;
@@ -214,7 +257,7 @@ main{max-width:960px;margin:0 auto;padding:14px 14px 30px}
   <section id="screen-game" class="screen">
     <div class="topbar">
       <button class="iconbtn" id="btnHome" aria-label="Home">🏠</button>
-      <div class="stars" id="starBar"><span class="st">⭐</span><span class="st">⭐</span><span class="st">⭐</span></div>
+      <div class="stars" id="starBar"><span class="st">⭐</span><span class="st">⭐</span><span class="st">⭐</span><span class="st">⭐</span></div>
       <div class="gems">💎 <span id="gemCount">0</span></div>
     </div>
     <div id="stage"></div>
@@ -557,12 +600,271 @@ async function phaseCount(){
   });
   await Voice.say(`${C.n === 3 ? 'Three' : C.n} ${C.plural}! ${pick(PRAISE)}`);
   setStars(3); Music.sfx('star');
+  phaseSteam();
+}
+/* ================= STEAM Play — every letter page's own STEAM box =================
+   The 5 printed strand activities (Science, Technology, Engineering, Art,
+   Mathematics) transformed into tap-play, using the corrected-edition
+   texts and the page's own book pictures. Each cell: 1-4 taps, no timer,
+   praise per cell, S·T·E·A·M badge fills as each strand is done. The
+   printed cell text stays visible in small type under the play area.   */
+function wordObj(name){ return G.L.words.find(w => w.word === name); }
+
+async function steamObserve(cell){
+  const L = G.L, play = $('#steamPlay');
+  await sayBubble(cell.text);
+  const items = cell.page
+    ? [{ img: L.pageImg, label: 'Your book page', page: true }]
+    : cell.imgs.map(n => { const w = wordObj(n); return { img: w.img, label: w.word }; });
+  play.innerHTML = `<div class="cards">${items.map(it => `
+      <button class="wcard obspic${it.page ? ' page' : ''}">
+        <img src="${it.img}" alt="${it.label}"><span class="tick">✓</span>
+        <div class="wl">${it.label}</div>
+      </button>`).join('')}</div>`;
+  let left = items.length;
+  await new Promise(resolve => {
+    play.querySelectorAll('.obspic').forEach(card => {
+      card.addEventListener('click', () => {
+        if (card.classList.contains('done')) return;
+        card.classList.add('done'); Music.sfx('pop'); sparkles(card, 6);
+        if (--left === 0) resolve();
+      });
+    });
+  });
+}
+async function steamTap(cell){
+  const L = G.L, play = $('#steamPlay');
+  const target = wordObj(cell.target);
+  play.innerHTML = `<div class="cards">${L.words.map(w => `
+    <button class="wcard" data-word="${w.word}">
+      <img src="${w.img}" alt="${w.word}"><div class="wl">${w.word}</div>
+    </button>`).join('')}</div>`;
+  await sayBubble(`Tap the ${target.say}!`);
+  let misses = 0;
+  await new Promise(resolve => {
+    const onTap = e => {
+      const card = e.target.closest('.wcard');
+      if (!card || card.classList.contains('done')) return;
+      if (card.dataset.word === target.word){
+        card.classList.add('done');
+        Music.sfx('good'); sparkles(card, 9); Voice.cheer();
+        play.removeEventListener('click', onTap); resolve();
+      } else {
+        misses++;
+        card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
+        Music.sfx('try');
+        if (misses >= 2){
+          const tc = play.querySelector(`[data-word="${target.word}"]`);
+          tc.classList.add('hint');
+          Voice.say(`Look! Here is the ${target.say}!`);
+          setTimeout(() => tc.classList.remove('hint'), 1600);
+        } else Voice.say('Try again!');
+      }
+    };
+    play.addEventListener('click', onTap);
+  });
+}
+async function steamCount(cell){
+  const play = $('#steamPlay');
+  const w = wordObj(cell.word), label = cell.label || w.plural, n = 3;
+  play.innerHTML = `<div class="countrow">${Array.from({ length: n }, (_, i) => `
+    <button class="ccard scount"><img src="${w.img}" alt="${w.word}"><span class="num">${i + 1}</span></button>`).join('')}</div>`;
+  await sayBubble(`Let's count the ${label}! Tap each one!`);
+  const NUMS = ['One!', 'Two!', 'Three!'];
+  let counted = 0, busyNum = false;
+  await new Promise(resolve => {
+    play.querySelectorAll('.scount').forEach((c, idx) => {
+      c.addEventListener('click', async () => {
+        if (c.classList.contains('counted') || busyNum) return;
+        busyNum = true;
+        c.classList.add('counted'); Music.sfx('pop'); sparkles(c, 5);
+        counted++;
+        await Voice.say(NUMS[idx]);
+        busyNum = false;
+        if (counted === n) resolve();
+      });
+    });
+  });
+  await Voice.say(`Three ${label}!`);
+}
+async function steamCount3(){
+  const L = G.L, play = $('#steamPlay');
+  play.innerHTML = `<div class="countrow">${L.words.map(w => `
+    <button class="ccard sc3" data-word="${w.word}"><img src="${w.img}" alt="${w.word}"><span class="num"></span></button>`).join('')}</div>`;
+  await sayBubble(`Let's count! Tap each picture!`);
+  const NUMS = ['One', 'Two', 'Three'];
+  let counted = 0, busyNum = false;
+  await new Promise(resolve => {
+    play.querySelectorAll('.sc3').forEach(c => {
+      c.addEventListener('click', async () => {
+        if (c.classList.contains('counted') || busyNum) return;
+        busyNum = true;
+        c.classList.add('counted'); Music.sfx('pop'); sparkles(c, 5);
+        c.querySelector('.num').textContent = counted + 1;
+        const line = `${NUMS[counted]}! ${wordObj(c.dataset.word).say}!`;
+        counted++;
+        await Voice.say(line);
+        busyNum = false;
+        if (counted === L.words.length) resolve();
+      });
+    });
+  });
+}
+async function steamSort(){
+  const L = G.L, play = $('#steamPlay');
+  const ranks = shuffle([3, 2, 1]);
+  const widths = { 3: 'min(205px,30vw)', 2: 'min(160px,24vw)', 1: 'min(120px,19vw)' };
+  play.innerHTML = `<div class="cards">${L.words.map((w, i) => `
+    <button class="wcard ssort" data-size="${ranks[i]}" style="width:${widths[ranks[i]]}">
+      <img src="${w.img}" alt="${w.word}"><div class="wl">${w.word}</div>
+    </button>`).join('')}</div>`;
+  await sayBubble(`Tap the biggest one first!`);
+  let expect = 3;
+  await new Promise(resolve => {
+    const onTap = e => {
+      const card = e.target.closest('.ssort');
+      if (!card || card.classList.contains('done')) return;
+      if (Number(card.dataset.size) === expect){
+        card.classList.add('done'); Music.sfx('pop'); sparkles(card, 6);
+        if (--expect === 0){ play.removeEventListener('click', onTap); resolve(); }
+      } else {
+        card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
+        Music.sfx('try'); Voice.say('Try again!');
+      }
+    };
+    play.addEventListener('click', onTap);
+  });
+}
+async function steamColour(cell){
+  const L = G.L, play = $('#steamPlay');
+  const isPage = cell.img === 'page';
+  const src = isPage ? L.pageImg : wordObj(cell.img).img;
+  const COLOURS = [
+    { name: 'Red', css: '#E23B3B' }, { name: 'Blue', css: '#2E7CD6' },
+    { name: 'Yellow', css: '#F2C018' }, { name: 'Green', css: '#37A24B' }
+  ];
+  play.innerHTML = `
+    <div class="colourframe${isPage ? ' pagef' : ''}" id="cframe"><img src="${src}" alt="Colour it!"></div>
+    <div class="swatchrow">${COLOURS.map(c => `<button class="swatch" data-name="${c.name}" data-css="${c.css}" style="background:${c.css}" aria-label="${c.name}"></button>`).join('')}</div>`;
+  await sayBubble('Pick a colour!');
+  let taps = 0, busyC = false;
+  await new Promise(resolve => {
+    play.querySelectorAll('.swatch').forEach(sw => {
+      sw.addEventListener('click', async () => {
+        if (busyC || taps >= 2) return;
+        busyC = true; taps++;
+        const f = $('#cframe');
+        f.style.borderColor = sw.dataset.css;
+        f.style.background = sw.dataset.css + '22';
+        Music.sfx('pop'); sparkles(f, 7); Voice.cheer();
+        await Voice.say(sw.dataset.name + '!');
+        busyC = false;
+        if (taps === 2) resolve();
+      });
+    });
+  });
+}
+async function steamBuild(cell){
+  const L = G.L, play = $('#steamPlay');
+  const topper = wordObj(cell.img), path = cell.variant === 'path';
+  play.innerHTML = `
+    <div class="buildarea" id="barea"><div class="${path ? 'stonerow' : 'stack'}" id="bstack"></div></div>
+    <button class="bigbtn" id="btap">${path ? '🪨 Tap! Make the path!' : '🧱 Tap! Add a block!'}</button>`;
+  await sayBubble(cell.text);
+  const COLS = ['#0B5D43', '#C9A227', '#2E7CD6', '#E5639A'];
+  const NUMS = ['One!', 'Two!', 'Three!', 'Four!'];
+  let built = 0, busyB = false;
+  await new Promise(resolve => {
+    $('#btap').addEventListener('click', async () => {
+      if (busyB || built >= 4) return;
+      busyB = true;
+      const st = $('#bstack');
+      if (path){
+        const s = document.createElement('div');
+        s.className = 'stone'; s.textContent = '🪨'; st.appendChild(s);
+      } else {
+        const b = document.createElement('div');
+        b.className = 'block'; b.style.background = COLS[built % 4]; st.appendChild(b);
+      }
+      Music.sfx('pop');
+      built++;
+      await Voice.say(NUMS[built - 1]);
+      busyB = false;
+      if (built === 4){
+        $('#btap').remove();
+        const t = document.createElement('img');
+        t.className = 'topper'; t.src = topper.img; t.alt = topper.word;
+        if (path) st.appendChild(t); else $('#barea').insertBefore(t, st);
+        Music.sfx('good'); sparkles(t, 8); Voice.cheer();
+        resolve();
+      }
+    });
+  });
+}
+async function steamPattern(){
+  const play = $('#steamPlay');
+  const SEQ = ['k', 'w', 'k', 'w'];
+  play.innerHTML = `
+    <div class="patdisplay">${SEQ.map(s => `<span class="patdot ${s}"></span>`).join('')}
+      <span style="align-self:center;font-weight:800;font-size:22px">➜</span>
+      ${SEQ.map(() => `<span class="patdot pslot q">?</span>`).join('')}</div>
+    <div class="patiles">
+      <button class="patile" data-c="k"><span class="patdot k"></span></button>
+      <button class="patile" data-c="w"><span class="patdot w"></span></button>
+    </div>`;
+  await sayBubble('Black, white, black, white! What comes next?');
+  let step = 0, busyP = false;
+  await new Promise(resolve => {
+    const onTap = async e => {
+      const tile = e.target.closest('.patile');
+      if (!tile || busyP) return;
+      if (tile.dataset.c === SEQ[step]){
+        busyP = true;
+        const slot = play.querySelectorAll('.pslot')[step];
+        slot.className = 'patdot pslot ' + SEQ[step]; slot.textContent = '';
+        Music.sfx('pop'); sparkles(tile, 5);
+        step++;
+        await Voice.say(SEQ[step - 1] === 'k' ? 'Black!' : 'White!');
+        busyP = false;
+        if (step === 4){ play.removeEventListener('click', onTap); resolve(); }
+      } else {
+        tile.classList.remove('shake'); void tile.offsetWidth; tile.classList.add('shake');
+        Music.sfx('try'); Voice.say('Try again!');
+      }
+    };
+    play.addEventListener('click', onTap);
+  });
+}
+async function phaseSteam(){
+  const L = G.L;
+  const RENDER = { observe: steamObserve, tap: steamTap, count: steamCount,
+    count3: steamCount3, sort: steamSort, colour: steamColour,
+    build: steamBuild, pattern: steamPattern };
+  stage.innerHTML = `<div class="phase">
+      <div class="badges" id="badges">${L.steam.map((c, i) => `<span class="badge b${i}" data-i="${i}">${'STEAM'[i]}</span>`).join('')}</div>
+      <div id="steamPlay"></div>
+      <p class="steamtext">📖 From your book: <span id="steamText"></span></p>
+    </div>`;
+  await sayBubble('Now, STEAM Play! Five games from your book page!');
+  for (let i = 0; i < L.steam.length; i++){
+    const cell = L.steam[i];
+    const badge = document.querySelector(`#badges .badge[data-i="${i}"]`);
+    badge.classList.add('now');
+    $('#steamText').textContent = cell.text;
+    await sayBubble(`${cell.strand}!`);
+    await RENDER[cell.play](cell);
+    badge.classList.remove('now'); badge.classList.add('on');
+    G.gems++; setGems(G.gems);
+    Music.sfx('good'); Voice.cheer();
+    if (i < L.steam.length - 1) await Voice.say(pick(PRAISE));
+  }
+  setStars(4); Music.sfx('star');
   phaseFinish();
 }
 function phaseFinish(){
   const L = G.L;
   stage.innerHTML = `<div class="phase">
-      <div class="finishstars"><span class="st">⭐</span><span class="st">⭐</span><span class="st">⭐</span></div>
+      <div class="finishstars"><span class="st">⭐</span><span class="st">⭐</span><span class="st">⭐</span><span class="st">⭐</span></div>
       <div class="finishmsg">You learned the letter ${L.upper}!</div>
       <div>
         <button class="bigbtn gold" id="btnAgain">↻ Play Again</button>
